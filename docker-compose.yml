@@ -1,0 +1,5 @@
+services:
+  db:
+    image: mssql-server:latest
+    restart: always
+  
