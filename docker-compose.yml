@@ -1,5 +1,17 @@
 services:
-  db:
-    image: mssql-server:latest
+  mssql:
+    image: mcr.microsoft.com/mssql/server:latest
+    container_name: mssql_container
     restart: always
-  
+    ports:
+      - "${PORT}:${PORT}"
+    environment:
+      - SA_PASSWORD=${SA_PASSWORD}
+      - ACCEPT_EULA=${ACCEPT_EULA}
+      - MSSQL_DATABASE=${MSSQL_DATABASE}
+      - PORT=${PORT}
+    volumes:
+      - mssql_data:/var/opt/mssql
+
+volumes:
+  mssql_data:

@@ -1,3 +1,9 @@
+CREATE DATABASE alpinizm;
+GO
+
+USE alpinizm;
+GO
+
 CREATE TABLE category_of_difficulty
 (
  ID_category INT,
@@ -108,14 +114,12 @@ CONSTRAINT FK_leaders_member_group FOREIGN KEY(ID_team_member) REFERENCES team(I
 CONSTRAINT PK_team_leaders PRIMARY KEY(ID_entry)
 )
 
-
-
 CREATE TABLE climbers_in_groups
 (
- ID_entry INT,
- ID_alpinist INT ,
- ID_groups INT,
- CONSTRAINT FK_alpinist_group FOREIGN KEY(ID_alpinist) REFERENCES alpinists(ID_alpinist) ON DELETE CASCADE,
- CONSTRAINT FK_group_alpinist FOREIGN KEY(ID_groups)  REFERENCES groups(ID_groups) ON DELETE CASCADE,
- CONSTRAINT PK_climbers_in_groups PRIMARY KEY(ID_entry)
+ID_entry INT,
+ID_alpinist INT ,
+ID_groups INT,
+CONSTRAINT FK_alpinist_group FOREIGN KEY(ID_alpinist) REFERENCES alpinists(ID_alpinist) ON DELETE CASCADE,
+CONSTRAINT FK_group_alpinist FOREIGN KEY(ID_groups)  REFERENCES groups(ID_groups) ON DELETE CASCADE,
+CONSTRAINT PK_climbers_in_groups PRIMARY KEY(ID_entry)
 )
