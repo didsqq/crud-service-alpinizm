@@ -1,4 +1,3 @@
-
 DROP TABLE IF EXISTS climbers_in_groups;
 DROP TABLE IF EXISTS team_leaders;
 DROP TABLE IF EXISTS team;

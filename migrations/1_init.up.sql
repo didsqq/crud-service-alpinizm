@@ -1,9 +1,3 @@
-CREATE DATABASE alpinizm;
-GO
-
-USE alpinizm;
-GO
-
 CREATE TABLE category_of_difficulty
 (
  ID_category INT,
