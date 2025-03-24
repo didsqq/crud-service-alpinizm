@@ -2,7 +2,11 @@ package main
 
 import (
 	"log"
+	"os"
+	"os/signal"
+	"syscall"
 
+	"github.com/didsqq/crud-service-alpinizm/internal/services"
 	"github.com/didsqq/crud-service-alpinizm/internal/storage"
 	"github.com/spf13/viper"
 )
@@ -12,7 +16,7 @@ func main() {
 		log.Fatalf("error initializing configs: %s", err.Error())
 	}
 
-	_, err := storage.NewMsSqlDB(storage.Config{
+	db, err := storage.NewMsSqlDB(storage.Config{
 		Host:     viper.GetString("db.host"),
 		Port:     viper.GetString("db.port"),
 		Username: viper.GetString("db.username"),
@@ -25,6 +29,28 @@ func main() {
 		return
 	}
 
+	repo := storage.NewRepository(db)
+
+	service := services.NewService(repo)
+
+	log.Println("starting application")
+
+	// application := app.New(log, cfg.GRPC.Port, cfg.StoragePath, cfg.TokenTTL)
+
+	// go application.GRPCSrv.MustRun()
+
+	//Graceful shutdown
+
+	log.Println("Все заебись")
+
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, syscall.SIGTERM, syscall.SIGINT)
+
+	<-stop
+
+	// application.GRPCSrv.Stop()
+
+	log.Printf("application stopped")
 }
 
 func initConfig() error {

@@ -1,10 +1,11 @@
 package storage
 
 import (
-	"database/sql"
 	"fmt"
+	"log"
 
 	_ "github.com/denisenkom/go-mssqldb"
+	"github.com/jmoiron/sqlx"
 )
 
 const (
@@ -31,13 +32,13 @@ type Config struct {
 	Encrypt  string
 }
 
-func NewMsSqlDB(cfg Config) (*sql.DB, error) {
+func NewMsSqlDB(cfg Config) (*sqlx.DB, error) {
 	const op = "storage.mssql.New"
-
+	log.Println(op, cfg)
 	connString := fmt.Sprintf("sqlserver://%s:%s@%s:%s?database=%s&encrypt=%s",
 		cfg.Username, cfg.Password, cfg.Host, cfg.Port, cfg.DBName, cfg.Encrypt)
 
-	db, err := sql.Open("sqlserver", connString)
+	db, err := sqlx.Open("sqlserver", connString)
 	if err != nil {
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
