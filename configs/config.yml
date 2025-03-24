@@ -1,0 +1,7 @@
+db:
+  host: "localhost"
+  username: "sa"
+  port: "1433"
+  dbname: "alpinizm"
+  encrypt: "disable"
+  password: "YourStrong!Passw0rd"

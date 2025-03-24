@@ -12,7 +12,7 @@ func main() {
 		log.Fatalf("error initializing configs: %s", err.Error())
 	}
 
-	db, err := storage.NewMsSqlDB(storage.Config{
+	_, err := storage.NewMsSqlDB(storage.Config{
 		Host:     viper.GetString("db.host"),
 		Port:     viper.GetString("db.port"),
 		Username: viper.GetString("db.username"),
