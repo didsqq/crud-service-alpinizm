@@ -6,6 +6,7 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/didsqq/crud-service-alpinizm/internal/app"
 	"github.com/didsqq/crud-service-alpinizm/internal/services"
 	"github.com/didsqq/crud-service-alpinizm/internal/storage"
 	"github.com/spf13/viper"
@@ -35,9 +36,9 @@ func main() {
 
 	log.Println("starting application")
 
-	// application := app.New(log, cfg.GRPC.Port, cfg.StoragePath, cfg.TokenTTL)
+	application := app.New(service, 44044)
 
-	// go application.GRPCSrv.MustRun()
+	go application.Run()
 
 	//Graceful shutdown
 

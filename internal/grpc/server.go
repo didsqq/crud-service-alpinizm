@@ -25,7 +25,7 @@ func Register(gRPC *grpc.Server, climb Climbs) {
 	crudv1.RegisterCrudServer(gRPC, &serverAPI{climb: climb})
 }
 
-func (s *serverAPI) GetAll(ctx context.Context) (*crudv1.ClimbsResponse, error) {
+func (s *serverAPI) Climbs(ctx context.Context, req *crudv1.Empty) (*crudv1.ClimbsResponse, error) {
 	climbs, err := s.climb.GetAll()
 	if err != nil {
 		return nil, status.Error(codes.Internal, "internal error")
@@ -49,6 +49,6 @@ func (s *serverAPI) GetAll(ctx context.Context) (*crudv1.ClimbsResponse, error) 
 	}, nil
 }
 
-func (s *serverAPI) GetById(ctx context.Context, req *crudv1.ClimbRequest) (*crudv1.ClimbResponse, error) {
+func (s *serverAPI) Climb(ctx context.Context, req *crudv1.ClimbRequest) (*crudv1.ClimbResponse, error) {
 	return &crudv1.ClimbResponse{}, nil
 }
