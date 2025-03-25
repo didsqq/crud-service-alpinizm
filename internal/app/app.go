@@ -1,7 +1,7 @@
 package app
 
 import (
-	climbgrpc "crud-service-alpinizm/internal/grpc"
+	climbgrpc "github.com/didsqq/crud-service-alpinizm/internal/grpc"
 
 	"google.golang.org/grpc"
 )
@@ -12,7 +12,7 @@ type App struct {
 }
 
 func New(
-	service climbgrpc.Server,
+	service climbgrpc.Climbs,
 	port int,
 ) *App {
 	gRPCServer := grpc.NewServer()
