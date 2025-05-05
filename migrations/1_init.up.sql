@@ -1,3 +1,12 @@
+IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'alpinism')
+BEGIN
+    CREATE DATABASE alpinism;
+END;
+GO
+
+USE alpinism;
+GO
+
 CREATE TABLE category_of_difficulty
 (
  ID_category INT,
@@ -22,16 +31,18 @@ CONSTRAINT PK_position PRIMARY KEY(ID_position)
 
 CREATE TABLE alpinists
 (
- ID_alpinist INT,
- Surname NVARCHAR(20) NOT NULL,
- Name_ NVARCHAR(10) NOT NULL,
- Address_ NVARCHAR(150),
- Phone VARCHAR(15) UNIQUE,
- Sex NVARCHAR(1) NOT NULL,
+ ID_alpinist INT IDENTITY(1,1),
+ Surname VARCHAR(100) NOT NULL,
+ Name_ VARCHAR(100) NOT NULL,
+ Address_ VARCHAR(255),
+ Phone VARCHAR(20) UNIQUE,
+ Sex VARCHAR(10) NOT NULL,
  ID_sport_category INT,
+ Username VARCHAR(50),
+ Password_ VARCHAR(100),
  CONSTRAINT PK_alpinists PRIMARY KEY(ID_alpinist),
- CONSTRAINT FK_alipinists_category FOREIGN KEY(ID_sport_category) REFERENCES sport_category(ID_sport_category) ON DELETE CASCADE
-)
+ CONSTRAINT FK_alpinists_category FOREIGN KEY(ID_sport_category) REFERENCES sport_category(ID_sport_category) ON DELETE CASCADE
+);
 
 CREATE TABLE equipment
 (
@@ -66,6 +77,7 @@ CREATE TABLE mountain_climbs
  Start_date_ DATE,
  End_date_ DATE,
  Total NVARCHAR(10),
+ Photo_url NVARCHAR(255),
  CONSTRAINT PK_mountain_climbs PRIMARY KEY(ID_mountain_climbs),
  CONSTRAINT FK_climbs_groups FOREIGN KEY(ID_groups) REFERENCES groups(ID_groups) ON DELETE CASCADE,
  CONSTRAINT FK_climbs_mountain FOREIGN KEY(ID_mountain) REFERENCES mountain(ID_mountain) ON DELETE CASCADE,

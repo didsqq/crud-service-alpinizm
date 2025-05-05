@@ -4,14 +4,38 @@ services:
     container_name: mssql_container
     restart: always
     ports:
-      - "${PORT}:${PORT}"
+      - "${DB_PORT}:${DB_PORT}"
     environment:
-      - SA_PASSWORD=${SA_PASSWORD}
-      - ACCEPT_EULA=${ACCEPT_EULA}
-      - MSSQL_DATABASE=${MSSQL_DATABASE}
-      - PORT=${PORT}
+      - SA_PASSWORD=${DB_SA_PASSWORD}
+      - ACCEPT_EULA=${DB_ACCEPT_EULA}
+      - MSSQL_DATABASE=${DB_DATABASE}
+      - PORT=${DB_PORT}
     volumes:
       - mssql_data:/var/opt/mssql
+
+  migrate:
+    image: mcr.microsoft.com/mssql-tools
+    depends_on:
+      - mssql
+    environment:
+      - SA_PASSWORD=${DB_SA_PASSWORD}
+      - DB_HOST=${DB_HOST}
+    volumes:
+      - ./migrations:/scripts
+      - ./wait-for-mssql.sh:/wait-for-mssql.sh
+    entrypoint: ["/bin/bash", "/wait-for-mssql.sh", "mssql"]
+    command:
+      [
+        "/opt/mssql-tools/bin/sqlcmd",
+        "-S",
+        "mssql",
+        "-U",
+        "sa",
+        "-P",
+        "${DB_SA_PASSWORD}",
+        "-i",
+        "/scripts/1_init.up.sql",
+      ]
 
 volumes:
   mssql_data:

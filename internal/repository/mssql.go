@@ -1,4 +1,4 @@
-package storage
+package repository
 
 import (
 	"fmt"
@@ -9,18 +9,18 @@ import (
 )
 
 const (
-	category_of_difficulty = "category_of_difficulty"
-	sport_category         = "sport_category"
-	position               = "position"
-	alpinists              = "alpinists"
-	equipment              = "equipment"
-	mountain               = "mountain"
-	groups                 = "groups"
-	mountain_climbs        = "mountain_climbs"
-	equipment_inventory    = "equipment_inventory"
-	team                   = "team"
-	team_leaders           = "team_leaders"
-	climbers_in_groups     = "climbers_in_groups"
+	category_of_difficultyTable = "category_of_difficulty"
+	sport_categoryTable         = "sport_category"
+	positionTable               = "position"
+	alpinistsTable              = "alpinists"
+	equipmentTable              = "equipment"
+	mountainTable               = "mountain"
+	groupsTable                 = "groups"
+	mountain_climbsTable        = "mountain_climbs"
+	equipment_inventoryTable    = "equipment_inventory"
+	teamTable                   = "team"
+	team_leadersTable           = "team_leaders"
+	climbers_in_groupsTable     = "climbers_in_groups"
 )
 
 type Config struct {

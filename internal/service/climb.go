@@ -1,22 +1,27 @@
-package services
+package service
 
 import (
 	"context"
 	"fmt"
 
 	"github.com/didsqq/crud-service-alpinizm/internal/domain"
-	"github.com/didsqq/crud-service-alpinizm/internal/storage"
+	"github.com/didsqq/crud-service-alpinizm/internal/repository"
 )
 
 type ClimbService struct {
-	climbStorage storage.Climbs
+	uow repository.UnitOfWork
 }
 
-func (s *ClimbService) GetAll() ([]domain.Climb, error) {
+func NewClimbsService(uow repository.UnitOfWork) *ClimbService {
+	return &ClimbService{
+		uow: uow,
+	}
+}
+
+func (s *ClimbService) GetAll(ctx context.Context) ([]domain.Climb, error) {
 	const op = "ClimbService.GetAll"
 
-	ctx := context.Background()
-	climbs, err := s.climbStorage.GetAll(ctx)
+	climbs, err := s.uow.ClimbsDb().GetAll(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
@@ -28,10 +33,4 @@ func (s *ClimbService) GetById(climbID int64) (domain.Climb, error) {
 	climb := domain.Climb{}
 
 	return climb, nil
-}
-
-func NewClimbsService(repo storage.Climbs) *ClimbService {
-	return &ClimbService{
-		climbStorage: repo,
-	}
 }
