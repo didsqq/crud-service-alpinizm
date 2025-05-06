@@ -35,7 +35,9 @@ CREATE TABLE IF NOT EXISTS alpinists (
 CREATE TABLE IF NOT EXISTS equipment (
     id SERIAL PRIMARY KEY,
     title VARCHAR(20) UNIQUE NOT NULL,
-    quantity_available INT NOT NULL CHECK (quantity_available > 0)
+    quantity_available INT NOT NULL CHECK (quantity_available > 0),
+    image_url VARCHAR(255),
+    description TEXT
 );
 
 -- Таблица: mountain

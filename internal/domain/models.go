@@ -29,4 +29,6 @@ type Equipment struct {
 	ID                int    `db:"id"`
 	Title             string `db:"title"`
 	QuantityAvailable int    `db:"quantity_available"`
+	ImageUrl          string `db:"image_url"`
+	Description       string `db:"description"`
 }
