@@ -27,9 +27,9 @@ func (r *userRepository) Create(ctx context.Context, user domain.User) (int, err
 
 	query := fmt.Sprintf(`
 		INSERT INTO %s 
-		(Surname, Name_, Address_, Phone, Sex, ID_sport_category, Username, Password_)
-		OUTPUT INSERTED.ID_alpinist
+		(surname, name_, address_, phone, sex, id_sport_category, username, password_)
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+		RETURNING id
 	`, alpinistsTable)
 
 	row := r.queryer.QueryRowxContext(ctx, query,

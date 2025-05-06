@@ -31,7 +31,7 @@ func (h *Handler) InitRoutes() *chi.Mux {
 		r.Get("/{id}", h.getUser)
 		r.Delete("/{id}", h.deleteUser)
 		r.Post("/", h.createUser)
-		r.Get("/", h.getAllUsers)
+		// r.Get("/", h.getAllUsers)
 	})
 
 	r.Route("/climbs", func(r chi.Router) {
@@ -40,8 +40,15 @@ func (h *Handler) InitRoutes() *chi.Mux {
 		// r.Get("/{id}", h.getClimb)
 	})
 
+	r.Route("/equipment", func(r chi.Router) {
+		// r.Post("/", h.createClimb)
+		r.Get("/", h.getAllEquipment)
+		// r.Get("/{id}", h.getAllEquipment)
+		// r.Get("/{id}", h.getClimb)
+	})
+
 	r.Get("/swagger/*", httpSwagger.Handler(
-		httpSwagger.URL("http://localhost:8080/swagger/doc.json"),
+		httpSwagger.URL("https://localhost:8080/swagger/doc.json"),
 	))
 
 	return r

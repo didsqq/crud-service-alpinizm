@@ -1,41 +1,32 @@
 services:
-  mssql:
-    image: mcr.microsoft.com/mssql/server:latest
-    container_name: mssql_container
-    restart: always
+  db:
+    image: postgres
+    volumes:
+      - db:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER}"]
+      interval: 5s
+      retries: 5
     ports:
-      - "${DB_PORT}:${DB_PORT}"
-    environment:
-      - SA_PASSWORD=${DB_SA_PASSWORD}
-      - ACCEPT_EULA=${DB_ACCEPT_EULA}
-      - MSSQL_DATABASE=${DB_DATABASE}
-      - PORT=${DB_PORT}
-    volumes:
-      - mssql_data:/var/opt/mssql
-
+      - "${DB_PORT}:5432"
   migrate:
-    image: mcr.microsoft.com/mssql-tools
-    depends_on:
-      - mssql
-    environment:
-      - SA_PASSWORD=${DB_SA_PASSWORD}
-      - DB_HOST=${DB_HOST}
+    image: migrate/migrate
     volumes:
-      - ./migrations:/scripts
-      - ./wait-for-mssql.sh:/wait-for-mssql.sh
-    entrypoint: ["/bin/bash", "/wait-for-mssql.sh", "mssql"]
+      - ./migrations:/migrations
     command:
       [
-        "/opt/mssql-tools/bin/sqlcmd",
-        "-S",
-        "mssql",
-        "-U",
-        "sa",
-        "-P",
-        "${DB_SA_PASSWORD}",
-        "-i",
-        "/scripts/1_init.up.sql",
+        "-path",
+        "/migrations",
+        "-database",
+        "postgres://${DB_USER}:${DB_PASSWORD}@db:${DB_PORT}/${DB_NAME}?sslmode=disable",
+        "up",
       ]
-
+    depends_on:
+      db:
+        condition: service_healthy
 volumes:
-  mssql_data:
+  db:

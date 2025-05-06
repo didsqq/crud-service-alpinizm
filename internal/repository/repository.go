@@ -26,12 +26,17 @@ type UserRepository interface {
 	GetAll(ctx context.Context) ([]domain.User, error)
 }
 
+type EquipmentRepository interface {
+	GetAll(ctx context.Context) ([]domain.Equipment, error)
+}
+
 type UnitOfWork interface {
 	Begin() error
 	Commit() error
 	Rollback() error
 	UsersDb() UserRepository
 	ClimbsDb() ClimbRepository
+	EquipmentsDb() EquipmentRepository
 }
 
 type Queryer interface {
@@ -74,4 +79,8 @@ func (u *unitOfWork) UsersDb() UserRepository {
 
 func (u *unitOfWork) ClimbsDb() ClimbRepository {
 	return &climbRepository{queryer: u.db}
+}
+
+func (u *unitOfWork) EquipmentsDb() EquipmentRepository {
+	return &equipmentRepository{queryer: u.db}
 }

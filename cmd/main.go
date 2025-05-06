@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -13,6 +14,7 @@ import (
 	"github.com/didsqq/crud-service-alpinizm/internal/repository"
 	"github.com/didsqq/crud-service-alpinizm/internal/service"
 	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
 )
 
 func main() {
@@ -20,19 +22,19 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
-	db, err := repository.NewMsSqlDB(repository.Config{
-		Host:     getEnvVar("DB_HOST"),
-		Port:     getEnvVar("DB_PORT"),
-		Username: getEnvVar("DB_USERNAME"),
-		DBName:   getEnvVar("DB_DATABASE"),
-		Encrypt:  getEnvVar("DB_ENCRYPT"),
-		Password: getEnvVar("DB_SA_PASSWORD"),
-	})
+	dbPass := getEnvVar("DB_PASSWORD")
+	dbUser := getEnvVar("DB_USER")
+	dbName := getEnvVar("DB_NAME")
+	dbHost := getEnvVar("DB_HOST")
+	dbPort := getEnvVar("DB_PORT")
 
+	dsn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", dbUser, dbPass, dbHost, dbPort, dbName)
+
+	db, err := repository.NewPostgresDB(dsn)
 	if err != nil {
-		log.Fatalf("failed to connect to database: %v", err)
-		return
+		log.Fatalf("Error open db: %s", err)
 	}
+	defer db.Close()
 
 	repo := repository.NewUnitOfWork(db)
 

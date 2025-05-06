@@ -2,9 +2,7 @@ package repository
 
 import (
 	"fmt"
-	"log"
 
-	_ "github.com/denisenkom/go-mssqldb"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -23,22 +21,10 @@ const (
 	climbers_in_groupsTable     = "climbers_in_groups"
 )
 
-type Config struct {
-	Host     string
-	Port     string
-	Username string
-	Password string
-	DBName   string
-	Encrypt  string
-}
+func NewPostgresDB(dsn string) (*sqlx.DB, error) {
+	const op = "repository.NewPostgresDB"
 
-func NewMsSqlDB(cfg Config) (*sqlx.DB, error) {
-	const op = "storage.mssql.New"
-	log.Println(op, cfg)
-	connString := fmt.Sprintf("sqlserver://%s:%s@%s:%s?database=%s&encrypt=%s",
-		cfg.Username, cfg.Password, cfg.Host, cfg.Port, cfg.DBName, cfg.Encrypt)
-
-	db, err := sqlx.Open("sqlserver", connString)
+	db, err := sqlx.Open("postgres", dsn)
 	if err != nil {
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}

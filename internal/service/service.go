@@ -19,14 +19,20 @@ type User interface {
 	GetAll(ctx context.Context) ([]domain.User, error)
 }
 
+type Equipments interface {
+	GetAll(ctx context.Context) ([]domain.Equipment, error)
+}
+
 type Service struct {
 	User
 	Climbs
+	Equipments
 }
 
 func NewService(repo repository.UnitOfWork) *Service {
 	return &Service{
-		User:   NewUserService(repo),
-		Climbs: NewClimbsService(repo),
+		User:       NewUserService(repo),
+		Climbs:     NewClimbsService(repo),
+		Equipments: NewEquipmentService(repo),
 	}
 }

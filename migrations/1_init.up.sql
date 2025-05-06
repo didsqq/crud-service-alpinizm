@@ -1,131 +1,113 @@
-IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'alpinism')
-BEGIN
-    CREATE DATABASE alpinism;
-END;
-GO
-
-USE alpinism;
-GO
-
-CREATE TABLE category_of_difficulty
-(
- ID_category INT,
- Title NVARCHAR(20) UNIQUE NOT NULL,
- CONSTRAINT PK_category_of_difficulty PRIMARY KEY(ID_category)
-)
-
-CREATE TABLE sport_category
-(
- ID_sport_category INT,
- Title NVARCHAR(10) UNIQUE NOT NULL,
- CONSTRAINT PK_sport_category PRIMARY KEY(ID_sport_category)
-)
-
-CREATE TABLE position
-(
-ID_position INT,
-Title NVARCHAR(30) UNIQUE NOT NULL,
-Description_of NVARCHAR(40),
-CONSTRAINT PK_position PRIMARY KEY(ID_position)
-)
-
-CREATE TABLE alpinists
-(
- ID_alpinist INT IDENTITY(1,1),
- Surname VARCHAR(100) NOT NULL,
- Name_ VARCHAR(100) NOT NULL,
- Address_ VARCHAR(255),
- Phone VARCHAR(20) UNIQUE,
- Sex VARCHAR(10) NOT NULL,
- ID_sport_category INT,
- Username VARCHAR(50),
- Password_ VARCHAR(100),
- CONSTRAINT PK_alpinists PRIMARY KEY(ID_alpinist),
- CONSTRAINT FK_alpinists_category FOREIGN KEY(ID_sport_category) REFERENCES sport_category(ID_sport_category) ON DELETE CASCADE
+-- Таблица: category_of_difficulty
+CREATE TABLE IF NOT EXISTS category_of_difficulty (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(20) UNIQUE NOT NULL
 );
 
-CREATE TABLE equipment
-(
- ID_equipment INT,
- Title NVARCHAR(20) UNIQUE NOT NULL,
- Quantity_available INT NOT NULL CHECK(Quantity_available > 0),
- CONSTRAINT PK_equipment PRIMARY KEY(ID_equipment)
-)
+-- Таблица: sport_category
+CREATE TABLE IF NOT EXISTS sport_category (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(10) UNIQUE NOT NULL
+);
 
-CREATE TABLE mountain
-(
- ID_mountain INT ,
- Title NVARCHAR(40) UNIQUE,
- Height INT NOT NULL,
- Mountain_range NVARCHAR(60)
- CONSTRAINT PK_mountain1 PRIMARY KEY(ID_mountain)
-)
+-- Таблица: position
+CREATE TABLE IF NOT EXISTS position (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(30) UNIQUE NOT NULL,
+    description_of VARCHAR(40)
+);
 
-CREATE TABLE groups
-(
- ID_groups INT,
- Number_of_participants INT CHECK(Number_of_participants > 1),
- CONSTRAINT PK_groups PRIMARY KEY(ID_groups)
-)
+-- Таблица: alpinists
+CREATE TABLE IF NOT EXISTS alpinists (
+    id SERIAL PRIMARY KEY,
+    surname VARCHAR(100) NOT NULL,
+    name_ VARCHAR(100) NOT NULL,
+    address_ VARCHAR(255),
+    phone VARCHAR(20) UNIQUE,
+    sex VARCHAR(10) NOT NULL,
+    id_sport_category INT,
+    username VARCHAR(50),
+    password_ VARCHAR(100),
+    FOREIGN KEY (id_sport_category) REFERENCES sport_category(id) ON DELETE CASCADE
+);
 
-CREATE TABLE mountain_climbs
-(
- ID_mountain_climbs INT,
- ID_groups INT,
- ID_mountain INT ,
- ID_category INT,
- Start_date_ DATE,
- End_date_ DATE,
- Total NVARCHAR(10),
- Photo_url NVARCHAR(255),
- CONSTRAINT PK_mountain_climbs PRIMARY KEY(ID_mountain_climbs),
- CONSTRAINT FK_climbs_groups FOREIGN KEY(ID_groups) REFERENCES groups(ID_groups) ON DELETE CASCADE,
- CONSTRAINT FK_climbs_mountain FOREIGN KEY(ID_mountain) REFERENCES mountain(ID_mountain) ON DELETE CASCADE,
- CONSTRAINT FK_climbs_category FOREIGN KEY(ID_category) REFERENCES category_of_difficulty(ID_category) ON DELETE CASCADE
-)
+-- Таблица: equipment
+CREATE TABLE IF NOT EXISTS equipment (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(20) UNIQUE NOT NULL,
+    quantity_available INT NOT NULL CHECK (quantity_available > 0)
+);
 
-CREATE TABLE equipment_inventory
-(
-ID_entry INT,
-ID_groups  INT,
-ID_equipment INT,
-Quantity_taken INT,
-CONSTRAINT PK_equipment_inventory PRIMARY KEY(ID_entry),
-CONSTRAINT FK_equipment_group FOREIGN KEY(ID_groups) REFERENCES groups(ID_groups) ON DELETE CASCADE,
-CONSTRAINT FK_equimp_invent FOREIGN KEY(ID_equipment) REFERENCES equipment(ID_equipment) ON DELETE CASCADE
-)
+-- Таблица: mountain
+CREATE TABLE IF NOT EXISTS mountain (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(40) UNIQUE,
+    height INT NOT NULL,
+    mountain_range VARCHAR(60)
+);
 
-CREATE TABLE team 
-(
-ID_team_member INT,
-Surname_name NVARCHAR(100),
-Date_of_birth DATE,
-Address_ NVARCHAR(150),
-ID_position INT,
-Phone INT UNIQUE,
-Password_ VARCHAR(255),
-Login_ VARCHAR(255),
-CONSTRAINT PK_team PRIMARY KEY(ID_team_member),
-CONSTRAINT FK_position_team FOREIGN KEY(ID_position) REFERENCES position(ID_position) ON DELETE CASCADE
-)
+-- Таблица: groups
+CREATE TABLE IF NOT EXISTS groups (
+    id SERIAL PRIMARY KEY,
+    number_of_participants INT CHECK (number_of_participants > 1)
+);
 
+-- Таблица: mountain_climbs
+CREATE TABLE IF NOT EXISTS mountain_climbs (
+    id SERIAL PRIMARY KEY,
+    id_groups INT,
+    id_mountain INT,
+    id_category INT,
+    start_date DATE,
+    end_date DATE,
+    total VARCHAR(10),
+    photo_url VARCHAR(255),
+    FOREIGN KEY (id_groups) REFERENCES groups(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_mountain) REFERENCES mountain(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_category) REFERENCES category_of_difficulty(id) ON DELETE CASCADE
+);
 
-CREATE TABLE team_leaders
-(
-ID_entry INT,
-ID_groups INT,
-ID_team_member INT,
-CONSTRAINT FK_leaders_groups FOREIGN KEY(ID_groups) REFERENCES groups(ID_groups) ON DELETE CASCADE,
-CONSTRAINT FK_leaders_member_group FOREIGN KEY(ID_team_member) REFERENCES team(ID_team_member) ON DELETE CASCADE,
-CONSTRAINT PK_team_leaders PRIMARY KEY(ID_entry)
-)
+-- Таблица: equipment_inventory
+CREATE TABLE IF NOT EXISTS equipment_inventory (
+    id SERIAL PRIMARY KEY,
+    id_groups INT,
+    id_equipment INT,
+    quantity_taken INT,
+    FOREIGN KEY (id_groups) REFERENCES groups(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_equipment) REFERENCES equipment(id) ON DELETE CASCADE
+);
 
-CREATE TABLE climbers_in_groups
-(
-ID_entry INT,
-ID_alpinist INT ,
-ID_groups INT,
-CONSTRAINT FK_alpinist_group FOREIGN KEY(ID_alpinist) REFERENCES alpinists(ID_alpinist) ON DELETE CASCADE,
-CONSTRAINT FK_group_alpinist FOREIGN KEY(ID_groups)  REFERENCES groups(ID_groups) ON DELETE CASCADE,
-CONSTRAINT PK_climbers_in_groups PRIMARY KEY(ID_entry)
-)
+-- Таблица: team
+CREATE TABLE IF NOT EXISTS team (
+    id SERIAL PRIMARY KEY,
+    surname_name VARCHAR(100),
+    date_of_birth DATE,
+    address_ VARCHAR(150),
+    id_position INT,
+    phone VARCHAR(20) UNIQUE,
+    password_ VARCHAR(255),
+    login_ VARCHAR(255),
+    FOREIGN KEY (id_position) REFERENCES position(id) ON DELETE CASCADE
+);
+
+-- Таблица: team_leaders
+CREATE TABLE IF NOT EXISTS team_leaders (
+    id SERIAL PRIMARY KEY,
+    id_groups INT,
+    id_team_member INT,
+    FOREIGN KEY (id_groups) REFERENCES groups(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_team_member) REFERENCES team(id) ON DELETE CASCADE
+);
+
+-- Таблица: climbers_in_groups
+CREATE TABLE IF NOT EXISTS climbers_in_groups (
+    id SERIAL PRIMARY KEY,
+    id_alpinist INT,
+    id_groups INT,
+    FOREIGN KEY (id_alpinist) REFERENCES alpinists(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_groups) REFERENCES groups(id) ON DELETE CASCADE
+);
+
+-- CREATE TABLE IF NOT EXISTS alpinist_equipment (
+
+-- );
