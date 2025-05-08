@@ -13,13 +13,15 @@ import (
 	"github.com/didsqq/crud-service-alpinizm/internal/handler"
 	"github.com/didsqq/crud-service-alpinizm/internal/repository"
 	"github.com/didsqq/crud-service-alpinizm/internal/service"
+	"github.com/go-chi/jwtauth"
+	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
 
 func main() {
-	// if err := godotenv.Load(); err != nil {
-	// 	log.Fatal("Error loading .env file")
-	// }
+	if err := godotenv.Load(); err != nil {
+		log.Fatal("Error loading .env file")
+	}
 
 	dbPass := getEnvVar("DB_PASSWORD")
 	dbUser := getEnvVar("DB_USER")
@@ -35,11 +37,13 @@ func main() {
 	}
 	defer db.Close()
 
+	tokenAuth := jwtauth.New("HS256", []byte("secret"), nil)
+
 	repo := repository.NewUnitOfWork(db)
 
-	service := service.NewService(repo)
+	service := service.NewService(repo, tokenAuth)
 
-	handler := handler.NewHandler(service)
+	handler := handler.NewHandler(service, tokenAuth)
 
 	r := handler.InitRoutes()
 

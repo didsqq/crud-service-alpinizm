@@ -4,47 +4,63 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/didsqq/crud-service-alpinizm/internal/domain"
 	"github.com/didsqq/crud-service-alpinizm/internal/handler/middleware"
 	"github.com/didsqq/crud-service-alpinizm/internal/service"
 	"github.com/go-chi/chi"
+	"github.com/go-chi/cors"
+	"github.com/go-chi/jwtauth"
 	httpSwagger "github.com/swaggo/http-swagger"
 )
 
 type Handler struct {
-	services *service.Service
+	services  *service.Service
+	tokenAuth *jwtauth.JWTAuth
 }
 
-func NewHandler(services *service.Service) *Handler {
+func NewHandler(services *service.Service, tokenAuth *jwtauth.JWTAuth) *Handler {
 	return &Handler{
-		services: services,
+		services:  services,
+		tokenAuth: tokenAuth,
 	}
 }
 
 func (h *Handler) InitRoutes() *chi.Mux {
 	r := chi.NewRouter()
 
+	r.Use(cors.Handler(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:5173"}, // фронтенд
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+		ExposedHeaders:   []string{"Link"},
+		AllowCredentials: true,
+		MaxAge:           int(12 * time.Hour / time.Second),
+	}))
+
 	r.Use(middleware.LoggingMiddleware)
 
-	r.Route("/user", func(r chi.Router) {
-		r.Get("/{id}", h.getUser)
-		r.Delete("/{id}", h.deleteUser)
-		r.Post("/", h.createUser)
-		// r.Get("/", h.getAllUsers)
-	})
+	r.Route("/api", func(r chi.Router) {
+		r.Route("/user", func(r chi.Router) {
+			r.Get("/{id}", h.getUser)
+			r.Delete("/{id}", h.deleteUser)
+			r.Post("/registration", h.createUser)
+			r.Post("/login", h.loginUser)
+		})
 
-	r.Route("/climbs", func(r chi.Router) {
-		// r.Post("/", h.createClimb)
-		r.Get("/", h.getAllClimbs)
-		// r.Get("/{id}", h.getClimb)
-	})
+		r.Route("/climbs", func(r chi.Router) {
+			r.Get("/", h.getAllClimbs)
+			// r.Get("/{id}", h.getClimb)
+		})
 
-	r.Route("/equipment", func(r chi.Router) {
-		// r.Post("/", h.createClimb)
-		r.Get("/", h.getAllEquipment)
-		// r.Get("/{id}", h.getAllEquipment)
-		// r.Get("/{id}", h.getClimb)
+		r.Route("/equipment", func(r chi.Router) {
+			r.Get("/", h.getAllEquipment)
+		})
+
+		r.Route("/mountain", func(r chi.Router) {
+			r.Get("/", h.getAllMountains)
+		})
 	})
 
 	r.Get("/swagger/*", httpSwagger.Handler(

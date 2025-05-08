@@ -15,7 +15,7 @@ var (
 )
 
 type ClimbRepository interface {
-	GetAll(ctx context.Context) ([]domain.Climb, error)
+	GetAll(ctx context.Context, mountainID int, categoryID int) ([]domain.Climb, error)
 	GetById(ctx context.Context, climbID int64) (domain.Climb, error)
 }
 
@@ -24,10 +24,15 @@ type UserRepository interface {
 	GetByID(ctx context.Context, id int) (*domain.User, error)
 	Delete(ctx context.Context, id int) error
 	GetAll(ctx context.Context) ([]domain.User, error)
+	GetByUsername(ctx context.Context, username string) (*domain.User, error)
 }
 
 type EquipmentRepository interface {
 	GetAll(ctx context.Context) ([]domain.Equipment, error)
+}
+
+type MountainRepository interface {
+	GetAll(ctx context.Context) ([]domain.Mountain, error)
 }
 
 type UnitOfWork interface {
@@ -37,6 +42,7 @@ type UnitOfWork interface {
 	UsersDb() UserRepository
 	ClimbsDb() ClimbRepository
 	EquipmentsDb() EquipmentRepository
+	MountainsDb() MountainRepository
 }
 
 type Queryer interface {
@@ -83,4 +89,8 @@ func (u *unitOfWork) ClimbsDb() ClimbRepository {
 
 func (u *unitOfWork) EquipmentsDb() EquipmentRepository {
 	return &equipmentRepository{queryer: u.db}
+}
+
+func (u *unitOfWork) MountainsDb() MountainRepository {
+	return &mountainRepository{queryer: u.db}
 }

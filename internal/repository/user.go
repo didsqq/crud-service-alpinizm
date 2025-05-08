@@ -22,6 +22,39 @@ func (r *userRepository) GetAll(ctx context.Context) ([]domain.User, error) {
 	return users, nil
 }
 
+func (r *userRepository) GetByUsername(ctx context.Context, username string) (*domain.User, error) {
+	const op = "UserRepository.GetByUsername"
+
+	query := fmt.Sprintf(`
+		SELECT * FROM %s 
+		WHERE username=$1
+	`, alpinistsTable)
+
+	row := r.queryer.QueryRowxContext(ctx, query, username)
+
+	user := new(domain.User)
+	err := row.Scan(
+		&user.ID,
+		&user.Surname,
+		&user.Name,
+		&user.Address,
+		&user.Phone,
+		&user.Sex,
+		&user.IdSportCategory,
+		&user.Username,
+		&user.Password,
+	)
+	log.Println(user)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, ErrUserNotFound
+		}
+		return nil, fmt.Errorf("%s: %w", op, err)
+	}
+
+	return user, nil
+}
+
 func (r *userRepository) Create(ctx context.Context, user domain.User) (int, error) {
 	const op = "UserRepository.Create"
 
@@ -38,7 +71,7 @@ func (r *userRepository) Create(ctx context.Context, user domain.User) (int, err
 		user.Address,
 		user.Phone,
 		user.Sex,
-		user.ID_sport_category,
+		user.IdSportCategory,
 		user.Username,
 		user.Password,
 	)

@@ -5,10 +5,11 @@ import (
 
 	"github.com/didsqq/crud-service-alpinizm/internal/domain"
 	"github.com/didsqq/crud-service-alpinizm/internal/repository"
+	"github.com/go-chi/jwtauth"
 )
 
 type Climbs interface {
-	GetAll(ctx context.Context) ([]domain.Climb, error)
+	GetAll(ctx context.Context, mountainID int, categoryID int) ([]domain.Climb, error)
 	GetById(climbID int64) (domain.Climb, error)
 }
 
@@ -17,22 +18,29 @@ type User interface {
 	GetByID(ctx context.Context, id int) (*domain.User, error)
 	Delete(ctx context.Context, id int) error
 	GetAll(ctx context.Context) ([]domain.User, error)
+	Login(ctx context.Context, username string, password string) (string, error)
 }
 
 type Equipments interface {
 	GetAll(ctx context.Context) ([]domain.Equipment, error)
 }
 
+type Mountains interface {
+	GetAll(ctx context.Context) ([]domain.Mountain, error)
+}
+
 type Service struct {
 	User
 	Climbs
 	Equipments
+	Mountains
 }
 
-func NewService(repo repository.UnitOfWork) *Service {
+func NewService(repo repository.UnitOfWork, tokenAuth *jwtauth.JWTAuth) *Service {
 	return &Service{
-		User:       NewUserService(repo),
+		User:       NewUserService(repo, tokenAuth),
 		Climbs:     NewClimbsService(repo),
 		Equipments: NewEquipmentService(repo),
+		Mountains:  NewMountainService(repo),
 	}
 }

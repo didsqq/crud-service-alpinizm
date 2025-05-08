@@ -13,24 +13,29 @@ import (
 	"github.com/go-chi/chi"
 )
 
-// @Summary      Получить список пользователей
-// @Tags         user
-// @Description  Возвращает всех пользователей
-// @Accept       json
-// @Produce      json
-// @Success      200 {array} domain.User "Список пользователей"
-// @Failure      500 {string} string "Ошибка получения пользователей"
-// @Router       /user [get]
-func (h *Handler) getAllUsers(w http.ResponseWriter, req *http.Request) {
-	ctx := req.Context()
+func (h *Handler) loginUser(w http.ResponseWriter, req *http.Request) {
+	defer req.Body.Close()
 
-	users, err := h.services.User.GetAll(ctx)
+	var user domain.User
+	err := json.NewDecoder(req.Body).Decode(&user)
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Ошибка получения пользователей", err)
+		h.respondError(w, http.StatusBadRequest, "Ошибка парсинга json", err)
 		return
 	}
 
-	h.writeJSON(w, http.StatusOK, &users)
+	ctx := req.Context()
+
+	token, err := h.services.User.Login(ctx, user.Username, user.Password)
+	if err != nil {
+		if errors.Is(err, repository.ErrUserNotFound) {
+			h.respondError(w, http.StatusBadRequest, "Пользователь не найден", err)
+		} else {
+			h.respondError(w, http.StatusInternalServerError, "Ошибка входа пользователя", err)
+		}
+		return
+	}
+
+	h.respondSuccess(w, fmt.Sprintf("%s", token))
 }
 
 // @Summary      Создать пользователя

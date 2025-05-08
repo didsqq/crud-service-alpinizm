@@ -1,4 +1,11 @@
 services:
+  # app:
+  #   build:
+  #     context: .
+  #   ports:
+  #     - "${APP_PORT}:${APP_PORT}"
+  #   env_file:
+  #     - .env
   db:
     image: postgres
     volumes:

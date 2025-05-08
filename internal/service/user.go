@@ -2,18 +2,23 @@ package service
 
 import (
 	"context"
+	"time"
 
 	"github.com/didsqq/crud-service-alpinizm/internal/domain"
 	"github.com/didsqq/crud-service-alpinizm/internal/repository"
+	"github.com/go-chi/jwtauth"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type UserService struct {
-	uow repository.UnitOfWork
+	uow       repository.UnitOfWork
+	tokenAuth *jwtauth.JWTAuth
 }
 
-func NewUserService(uow repository.UnitOfWork) *UserService {
+func NewUserService(uow repository.UnitOfWork, tokenAuth *jwtauth.JWTAuth) *UserService {
 	return &UserService{
-		uow: uow,
+		uow:       uow,
+		tokenAuth: tokenAuth,
 	}
 }
 
@@ -27,7 +32,37 @@ func (s *UserService) GetAll(ctx context.Context) ([]domain.User, error) {
 	return users, nil
 }
 
+func (s *UserService) Login(ctx context.Context, username string, password string) (string, error) {
+	user, err := s.uow.UsersDb().GetByUsername(ctx, username)
+	if err != nil {
+		return "", err
+	}
+
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)); err != nil {
+		return "", err
+	}
+
+	_, token, err := s.tokenAuth.Encode(map[string]interface{}{
+		"id":    user.ID,
+		"login": user.Username,
+		"exp":   time.Now().Add(time.Hour * 72).Unix(),
+	})
+	if err != nil {
+		return "", err
+	}
+
+	return token, nil
+
+}
+
 func (s *UserService) Create(ctx context.Context, user domain.User) (int, error) {
+	passHash, err := generateHash(user.Password)
+	if err != nil {
+		return 0, err
+	}
+
+	user.Password = passHash
+
 	id, err := s.uow.UsersDb().Create(ctx, user)
 
 	if err != nil {
@@ -43,13 +78,6 @@ func (s *UserService) GetByID(ctx context.Context, id int) (*domain.User, error)
 		return nil, err
 	}
 
-	// books, err := s.uow.BooksDb().GetByUserID(ctx, id)
-	// if err != nil {
-	// 	return nil, err
-	// }
-
-	// user.RentedBooks = *books
-
 	return user, nil
 }
 
@@ -59,4 +87,13 @@ func (s *UserService) Delete(ctx context.Context, id int) error {
 	}
 
 	return nil
+}
+
+func generateHash(pass string) (string, error) {
+	passHash, err := bcrypt.GenerateFromPassword([]byte(pass), bcrypt.DefaultCost)
+	if err != nil {
+		return "", err
+	}
+
+	return string(passHash), nil
 }

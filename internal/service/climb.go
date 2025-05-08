@@ -18,10 +18,10 @@ func NewClimbsService(uow repository.UnitOfWork) *ClimbService {
 	}
 }
 
-func (s *ClimbService) GetAll(ctx context.Context) ([]domain.Climb, error) {
+func (s *ClimbService) GetAll(ctx context.Context, mountainID int, categoryID int) ([]domain.Climb, error) {
 	const op = "ClimbService.GetAll"
 
-	climbs, err := s.uow.ClimbsDb().GetAll(ctx)
+	climbs, err := s.uow.ClimbsDb().GetAll(ctx, mountainID, categoryID)
 	if err != nil {
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
