@@ -12,13 +12,12 @@ import (
 	"github.com/didsqq/crud-service-alpinizm/internal/handler"
 	"github.com/didsqq/crud-service-alpinizm/internal/repository"
 	"github.com/didsqq/crud-service-alpinizm/internal/service"
-	"github.com/joho/godotenv"
 )
 
 func main() {
-	if err := godotenv.Load(); err != nil {
-		log.Fatal("Error loading .env file")
-	}
+	// if err := godotenv.Load(); err != nil {
+	// 	log.Fatal("Error loading .env file")
+	// }
 
 	db, err := repository.NewMsSqlDB(repository.Config{
 		Host:     getEnvVar("DB_HOST"),
