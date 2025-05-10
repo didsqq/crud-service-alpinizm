@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/joho/godotenv"
 	"log"
 	"net/http"
 	"os"
@@ -19,9 +18,9 @@ import (
 )
 
 func main() {
-	if err := godotenv.Load(); err != nil {
-		log.Fatal("Error loading .env file")
-	}
+	//if err := godotenv.Load(); err != nil {
+	//	log.Fatal("Error loading .env file")
+	//}
 
 	dbPass := getEnvVar("DB_PASSWORD")
 	dbUser := getEnvVar("DB_USER")
