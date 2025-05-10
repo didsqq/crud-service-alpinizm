@@ -39,3 +39,8 @@ type Mountain struct {
 	Height        int    `db:"height"`
 	MountainRange string `db:"mountain_range"`
 }
+
+type SportCategory struct {
+	ID    int    `db:"id"`
+	Title string `db:"title"`
+}

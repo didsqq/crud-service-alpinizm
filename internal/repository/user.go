@@ -14,12 +14,26 @@ type userRepository struct {
 	queryer Queryer
 }
 
+func (r *userRepository) GetAllSportCategory(ctx context.Context) ([]domain.SportCategory, error) {
+	const op = "userRepository.GetAllSportCategory"
+
+	c := make([]domain.SportCategory, 0)
+
+	query := fmt.Sprintf("SELECT * FROM %s", sport_categoryTable)
+
+	if err := r.queryer.SelectContext(ctx, &c, query); err != nil {
+		return nil, fmt.Errorf("%s: %w", op, err)
+	}
+
+	return c, nil
+}
+
 func (r *userRepository) GetAll(ctx context.Context) ([]domain.User, error) {
 	const op = "userRepository.GetAll"
 
 	var users []domain.User
 
-	return users, nil
+	return users, fmt.Errorf("not implemented")
 }
 
 func (r *userRepository) GetByUsername(ctx context.Context, username string) (*domain.User, error) {

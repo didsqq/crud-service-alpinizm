@@ -22,6 +22,25 @@ func NewUserService(uow repository.UnitOfWork, tokenAuth *jwtauth.JWTAuth) *User
 	}
 }
 
+func (s *UserService) CheckToken(ctx context.Context, token string) (bool, error) {
+	_, err := s.tokenAuth.Decode(token)
+	if err != nil {
+		return false, err
+	}
+
+	return true, nil
+}
+
+func (s *UserService) GetAllSportCategory(ctx context.Context) ([]domain.SportCategory, error) {
+	users, err := s.uow.UsersDb().GetAllSportCategory(ctx)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return users, nil
+}
+
 func (s *UserService) GetAll(ctx context.Context) ([]domain.User, error) {
 	users, err := s.uow.UsersDb().GetAll(ctx)
 

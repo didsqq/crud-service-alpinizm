@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/didsqq/crud-service-alpinizm/internal/domain"
 	"github.com/didsqq/crud-service-alpinizm/internal/handler/validate"
@@ -145,4 +146,36 @@ func (h *Handler) deleteUser(w http.ResponseWriter, req *http.Request) {
 	}
 
 	h.respondSuccess(w, "Пользователь успешно удалён")
+}
+
+func (h *Handler) getAllSportCategory(w http.ResponseWriter, req *http.Request) {
+	ctx := req.Context()
+
+	c, err := h.services.User.GetAllSportCategory(ctx)
+	if err != nil {
+		h.respondError(w, http.StatusInternalServerError, "Ошибка получения спортивных категорий", err)
+		return
+	}
+
+	h.writeJSON(w, http.StatusOK, &c)
+}
+
+func (h *Handler) checkToken(w http.ResponseWriter, req *http.Request) {
+	ctx := req.Context()
+
+	token := req.Header.Get("authorization")
+
+	if strings.HasPrefix(token, "Bearer ") {
+		token = strings.TrimPrefix(token, "Bearer ")
+	}
+
+	b, err := h.services.User.CheckToken(ctx, token)
+	if err != nil {
+		h.respondError(w, http.StatusInternalServerError, "Ошибка получения токена", err)
+		return
+	}
+
+	h.writeJSON(w, http.StatusOK, map[string]interface{}{
+		"valid": b,
+	})
 }

@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/joho/godotenv"
 	"log"
 	"net/http"
 	"os"
@@ -18,9 +19,9 @@ import (
 )
 
 func main() {
-	// if err := godotenv.Load(); err != nil {
-	// 	log.Fatal("Error loading .env file")
-	// }
+	if err := godotenv.Load(); err != nil {
+		log.Fatal("Error loading .env file")
+	}
 
 	dbPass := getEnvVar("DB_PASSWORD")
 	dbUser := getEnvVar("DB_USER")
@@ -42,9 +43,9 @@ func main() {
 
 	service := service.NewService(repo, tokenAuth)
 
-	handler := handler.NewHandler(service, tokenAuth)
+	handler := handler.NewHandler(service)
 
-	r := handler.InitRoutes()
+	r := handler.InitRoutes(tokenAuth)
 
 	srv := &http.Server{
 		Addr:    ":" + getEnvVar("APP_PORT"),

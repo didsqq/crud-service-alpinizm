@@ -16,18 +16,16 @@ import (
 )
 
 type Handler struct {
-	services  *service.Service
-	tokenAuth *jwtauth.JWTAuth
+	services *service.Service
 }
 
-func NewHandler(services *service.Service, tokenAuth *jwtauth.JWTAuth) *Handler {
+func NewHandler(services *service.Service) *Handler {
 	return &Handler{
-		services:  services,
-		tokenAuth: tokenAuth,
+		services: services,
 	}
 }
 
-func (h *Handler) InitRoutes() *chi.Mux {
+func (h *Handler) InitRoutes(tokenAuth *jwtauth.JWTAuth) *chi.Mux {
 	r := chi.NewRouter()
 
 	r.Use(cors.Handler(cors.Options{
@@ -47,6 +45,8 @@ func (h *Handler) InitRoutes() *chi.Mux {
 			r.Delete("/{id}", h.deleteUser)
 			r.Post("/registration", h.createUser)
 			r.Post("/login", h.loginUser)
+			r.Get("/categories", h.getAllSportCategory)
+			r.Get("/auth", h.checkToken)
 		})
 
 		r.Route("/climbs", func(r chi.Router) {

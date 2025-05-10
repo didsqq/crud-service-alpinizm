@@ -25,6 +25,7 @@ type UserRepository interface {
 	Delete(ctx context.Context, id int) error
 	GetAll(ctx context.Context) ([]domain.User, error)
 	GetByUsername(ctx context.Context, username string) (*domain.User, error)
+	GetAllSportCategory(ctx context.Context) ([]domain.SportCategory, error)
 }
 
 type EquipmentRepository interface {

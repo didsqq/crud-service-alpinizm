@@ -19,6 +19,8 @@ type User interface {
 	Delete(ctx context.Context, id int) error
 	GetAll(ctx context.Context) ([]domain.User, error)
 	Login(ctx context.Context, username string, password string) (string, error)
+	GetAllSportCategory(ctx context.Context) ([]domain.SportCategory, error)
+	CheckToken(ctx context.Context, token string) (bool, error)
 }
 
 type Equipments interface {
