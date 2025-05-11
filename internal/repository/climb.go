@@ -40,7 +40,80 @@ func (s *climbRepository) GetAll(ctx context.Context, mountainID int, categoryID
 }
 
 func (s *climbRepository) GetById(ctx context.Context, climbID int64) (domain.Climb, error) {
-	climb := domain.Climb{}
+	const op = "climbRepository.GetById"
+
+	var climb domain.Climb
+
+	// 1. Основные данные
+	query := `
+	SELECT 
+		id, id_mountain, id_category, title, season, duration,
+		distance, elevation, map_url, rating, description, 
+		start_date, end_date, total, photo_url
+	FROM mountain_climbs
+	WHERE id = $1
+	`
+	err := s.queryer.GetContext(ctx, &climb, query, climbID)
+	if err != nil {
+		return domain.Climb{}, fmt.Errorf("%s: failed to get climb: %w", op, err)
+	}
+
+	// 2. Руководители
+	leadersQuery := `
+	SELECT t.id, t.surname_name, t.experience, t.date_of_birth, t.address_, t.id_position, t.phone, t.password_, t.login_
+	FROM team_leaders tl
+	JOIN team t ON t.id = tl.id_team_member
+	WHERE tl.id_mountain_climb = $1
+	`
+	err = s.queryer.SelectContext(ctx, &climb.TeamLeaders, leadersQuery, climbID)
+	if err != nil {
+		return domain.Climb{}, fmt.Errorf("%s: failed to get team leaders: %w", op, err)
+	}
+
+	// 3. Снаряжение
+	equipmentQuery := `
+	SELECT e.id, e.title, e.quantity_available, e.image_url, e.description
+	FROM climb_equipment ce
+	JOIN equipment e ON e.id = ce.equipment_id
+	WHERE ce.climb_id = $1
+	`
+	err = s.queryer.SelectContext(ctx, &climb.Equipments, equipmentQuery, climbID)
+	if err != nil {
+		return domain.Climb{}, fmt.Errorf("%s: failed to get equipment: %w", op, err)
+	}
+
+	// 4. Изображения
+	imagesQuery := `
+	SELECT id, climb_id, url
+	FROM climb_images
+	WHERE climb_id = $1
+	`
+	err = s.queryer.SelectContext(ctx, &climb.Images, imagesQuery, climbID)
+	if err != nil {
+		return domain.Climb{}, fmt.Errorf("%s: failed to get images: %w", op, err)
+	}
+
+	// 5. Гора
+	mountainQuery := `
+	SELECT id, title, height, mountain_range
+	FROM mountain
+	WHERE id = $1
+	`
+	err = s.queryer.GetContext(ctx, &climb.Mountain, mountainQuery, climb.IdMountain)
+	if err != nil {
+		return domain.Climb{}, fmt.Errorf("%s: failed to get mountain: %w", op, err)
+	}
+
+	// 6. Категория
+	categoryQuery := `
+	SELECT title
+	FROM sport_category
+	WHERE id = $1
+	`
+	err = s.queryer.GetContext(ctx, &climb.Category, categoryQuery, climb.IdMountain)
+	if err != nil {
+		return domain.Climb{}, fmt.Errorf("%s: failed to get category: %w", op, err)
+	}
 
 	return climb, nil
 }

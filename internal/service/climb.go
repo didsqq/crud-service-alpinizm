@@ -29,8 +29,13 @@ func (s *ClimbService) GetAll(ctx context.Context, mountainID int, categoryID in
 	return climbs, nil
 }
 
-func (s *ClimbService) GetById(climbID int64) (domain.Climb, error) {
-	climb := domain.Climb{}
+func (s *ClimbService) GetById(ctx context.Context, climbID int64) (domain.Climb, error) {
+	const op = "ClimbService.GetById"
+
+	climb, err := s.uow.ClimbsDb().GetById(ctx, climbID)
+	if err != nil {
+		return domain.Climb{}, fmt.Errorf("%s: %w", op, err)
+	}
 
 	return climb, nil
 }

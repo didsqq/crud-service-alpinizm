@@ -49,9 +49,9 @@ func (h *Handler) InitRoutes(tokenAuth *jwtauth.JWTAuth) *chi.Mux {
 			r.Get("/auth", h.checkToken)
 		})
 
-		r.Route("/climbs", func(r chi.Router) {
+		r.Route("/climb", func(r chi.Router) {
 			r.Get("/", h.getAllClimbs)
-			// r.Get("/{id}", h.getClimb)
+			r.Get("/{id}", h.getClimb)
 		})
 
 		r.Route("/equipment", func(r chi.Router) {

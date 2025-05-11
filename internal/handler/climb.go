@@ -4,6 +4,8 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+
+	"github.com/go-chi/chi"
 )
 
 func (h *Handler) getAllClimbs(w http.ResponseWriter, req *http.Request) {
@@ -39,4 +41,24 @@ func (h *Handler) getAllClimbs(w http.ResponseWriter, req *http.Request) {
 	}
 
 	h.writeJSON(w, http.StatusOK, &climbs)
+}
+
+func (h *Handler) getClimb(w http.ResponseWriter, req *http.Request) {
+	climbIDStr := chi.URLParam(req, "id")
+
+	climbID, err := strconv.Atoi(climbIDStr)
+	if err != nil {
+		h.respondError(w, http.StatusBadRequest, "Неверный climbId", err)
+		return
+	}
+
+	ctx := req.Context()
+
+	climb, err := h.services.Climbs.GetById(ctx, int64(climbID))
+	if err != nil {
+		h.respondError(w, http.StatusInternalServerError, "Ошибка получения восхождения", err)
+		return
+	}
+
+	h.writeJSON(w, http.StatusOK, &climb)
 }

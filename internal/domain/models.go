@@ -15,14 +15,38 @@ type User struct {
 }
 
 type Climb struct {
-	ID         int64     `db:"id"`
-	IdGroup    int64     `db:"id_groups"`
-	IdMountain int64     `db:"id_mountain"`
-	IdCategory int64     `db:"id_category"`
-	StartDate  time.Time `db:"start_date"`
-	EndDate    time.Time `db:"end_date"`
-	Total      string    `db:"total"`
-	PhotoUrl   string    `db:"photo_url"`
+	ID          int64       `db:"id"`
+	IdMountain  int64       `db:"id_mountain"`
+	IdCategory  int64       `db:"id_category"`
+	Title       string      `db:"title"`
+	Season      string      `db:"season"`
+	Duration    string      `db:"duration"`
+	Distance    string      `db:"distance"`
+	Elevation   string      `db:"elevation"`
+	MapUrl      string      `db:"map_url"`
+	Rating      float64     `db:"rating"`
+	Description string      `db:"description"`
+	StartDate   time.Time   `db:"start_date"`
+	EndDate     time.Time   `db:"end_date"`
+	Total       string      `db:"total"`
+	PhotoUrl    string      `db:"photo_url"`
+	TeamLeaders []Team      `db:"team_leaders"`
+	Equipments  []Equipment `db:"equipments"`
+	Images      []Image     `db:"images"`
+	Mountain    Mountain    `db:"mountain"`
+	Category    string      `db:"category"`
+}
+
+type Team struct {
+	ID          int64  `db:"id"`
+	SurnameName string `db:"surname_name"`
+	Experience  string `db:"experience"`
+	DateOfBirth string `db:"date_of_birth"`
+	Address     string `db:"address_"`
+	IdPosition  string `db:"id_position"`
+	Phone       string `db:"phone"`
+	Login       string `db:"login_"`
+	Password    string `db:"password_"`
 }
 
 type Equipment struct {
@@ -43,4 +67,10 @@ type Mountain struct {
 type SportCategory struct {
 	ID    int    `db:"id"`
 	Title string `db:"title"`
+}
+
+type Image struct {
+	ID       int    `db:"id"`
+	ClimbID  int    `db:"climb_id"`
+	ImageUrl string `db:"url"`
 }

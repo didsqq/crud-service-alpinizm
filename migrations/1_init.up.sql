@@ -1,24 +1,24 @@
 -- Таблица: category_of_difficulty
-CREATE TABLE IF NOT EXISTS category_of_difficulty (
+CREATE TABLE category_of_difficulty (
     id SERIAL PRIMARY KEY,
     title VARCHAR(20) UNIQUE NOT NULL
 );
 
 -- Таблица: sport_category
-CREATE TABLE IF NOT EXISTS sport_category (
+CREATE TABLE sport_category (
     id SERIAL PRIMARY KEY,
     title VARCHAR(10) UNIQUE NOT NULL
 );
 
 -- Таблица: position
-CREATE TABLE IF NOT EXISTS position (
+CREATE TABLE position (
     id SERIAL PRIMARY KEY,
     title VARCHAR(30) UNIQUE NOT NULL,
-    description_of VARCHAR(40)
+    description_of VARCHAR(100)
 );
 
 -- Таблица: alpinists
-CREATE TABLE IF NOT EXISTS alpinists (
+CREATE TABLE alpinists (
     id SERIAL PRIMARY KEY,
     surname VARCHAR(100) NOT NULL,
     name_ VARCHAR(100) NOT NULL,
@@ -32,57 +32,57 @@ CREATE TABLE IF NOT EXISTS alpinists (
 );
 
 -- Таблица: equipment
-CREATE TABLE IF NOT EXISTS equipment (
+CREATE TABLE equipment (
     id SERIAL PRIMARY KEY,
-    title VARCHAR(20) UNIQUE NOT NULL,
+    title VARCHAR(255) UNIQUE NOT NULL,
     quantity_available INT NOT NULL CHECK (quantity_available > 0),
     image_url VARCHAR(255),
     description TEXT
 );
 
 -- Таблица: mountain
-CREATE TABLE IF NOT EXISTS mountain (
+CREATE TABLE mountain (
     id SERIAL PRIMARY KEY,
-    title VARCHAR(40) UNIQUE,
+    title VARCHAR(255) UNIQUE,
     height INT NOT NULL,
-    mountain_range VARCHAR(60)
-);
-
--- Таблица: groups
-CREATE TABLE IF NOT EXISTS groups (
-    id SERIAL PRIMARY KEY,
-    number_of_participants INT CHECK (number_of_participants > 1)
+    mountain_range VARCHAR(255)
 );
 
 -- Таблица: mountain_climbs
-CREATE TABLE IF NOT EXISTS mountain_climbs (
+CREATE TABLE mountain_climbs (
     id SERIAL PRIMARY KEY,
-    id_groups INT,
     id_mountain INT,
     id_category INT,
+    title VARCHAR(255),
+    season VARCHAR(50),
+    duration VARCHAR(50),
+    distance VARCHAR(50),
+    elevation VARCHAR(50),
+    map_url VARCHAR(255),
+    rating DECIMAL,
+    description VARCHAR(255),
     start_date DATE,
     end_date DATE,
     total VARCHAR(10),
     photo_url VARCHAR(255),
-    FOREIGN KEY (id_groups) REFERENCES groups(id) ON DELETE CASCADE,
     FOREIGN KEY (id_mountain) REFERENCES mountain(id) ON DELETE CASCADE,
     FOREIGN KEY (id_category) REFERENCES category_of_difficulty(id) ON DELETE CASCADE
 );
 
 -- Таблица: equipment_inventory
-CREATE TABLE IF NOT EXISTS equipment_inventory (
+CREATE TABLE equipment_inventory (
     id SERIAL PRIMARY KEY,
-    id_groups INT,
     id_equipment INT,
-    quantity_taken INT,
-    FOREIGN KEY (id_groups) REFERENCES groups(id) ON DELETE CASCADE,
+    id_alpinist INT,
+    FOREIGN KEY (id_alpinist) REFERENCES alpinists(id) ON DELETE CASCADE,
     FOREIGN KEY (id_equipment) REFERENCES equipment(id) ON DELETE CASCADE
 );
 
 -- Таблица: team
-CREATE TABLE IF NOT EXISTS team (
+CREATE TABLE team (
     id SERIAL PRIMARY KEY,
     surname_name VARCHAR(100),
+    experience TEXT,
     date_of_birth DATE,
     address_ VARCHAR(150),
     id_position INT,
@@ -93,23 +93,28 @@ CREATE TABLE IF NOT EXISTS team (
 );
 
 -- Таблица: team_leaders
-CREATE TABLE IF NOT EXISTS team_leaders (
+CREATE TABLE team_leaders (
     id SERIAL PRIMARY KEY,
-    id_groups INT,
+    id_mountain_climb INT,
     id_team_member INT,
-    FOREIGN KEY (id_groups) REFERENCES groups(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_mountain_climb) REFERENCES mountain_climbs(id) ON DELETE CASCADE,
     FOREIGN KEY (id_team_member) REFERENCES team(id) ON DELETE CASCADE
 );
 
--- Таблица: climbers_in_groups
-CREATE TABLE IF NOT EXISTS climbers_in_groups (
-    id SERIAL PRIMARY KEY,
-    id_alpinist INT,
-    id_groups INT,
-    FOREIGN KEY (id_alpinist) REFERENCES alpinists(id) ON DELETE CASCADE,
-    FOREIGN KEY (id_groups) REFERENCES groups(id) ON DELETE CASCADE
+CREATE TABLE climb_equipment (
+    climb_id INT REFERENCES mountain_climbs(id) ON DELETE CASCADE,
+    equipment_id INT REFERENCES equipment(id) ON DELETE CASCADE,
+    PRIMARY KEY (climb_id, equipment_id)
 );
 
--- CREATE TABLE IF NOT EXISTS alpinist_equipment (
+CREATE TABLE climb_images (
+    id SERIAL PRIMARY KEY,
+    climb_id INT REFERENCES mountain_climbs(id) ON DELETE CASCADE,
+    url TEXT
+);
 
--- );
+CREATE TABLE alpinist_equipment (
+    id SERIAL PRIMARY KEY,
+    equipment_id INT REFERENCES equipment(id) ON DELETE CASCADE,
+    alpinist_id INT REFERENCES alpinists(id) ON DELETE CASCADE
+);
