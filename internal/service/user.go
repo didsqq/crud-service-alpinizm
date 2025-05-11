@@ -6,7 +6,7 @@ import (
 
 	"github.com/didsqq/crud-service-alpinizm/internal/domain"
 	"github.com/didsqq/crud-service-alpinizm/internal/repository"
-	"github.com/go-chi/jwtauth"
+	"github.com/go-chi/jwtauth/v5"
 	"golang.org/x/crypto/bcrypt"
 )
 

@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"fmt"
+	"log"
 
 	"github.com/didsqq/crud-service-alpinizm/internal/domain"
 	"github.com/didsqq/crud-service-alpinizm/internal/repository"
@@ -16,6 +17,34 @@ func NewClimbsService(uow repository.UnitOfWork) *ClimbService {
 	return &ClimbService{
 		uow: uow,
 	}
+}
+
+func (s *ClimbService) RecordAlpinistClimb(ctx context.Context, alpinistID int64, climbID int64) error {
+	const op = "ClimbService.RecordAlpinistClimb"
+
+	if err := s.uow.Begin(); err != nil {
+		return fmt.Errorf("failed to begin transaction: %w", err)
+	}
+
+	var transactionErr error
+	defer func() {
+		if transactionErr != nil {
+			if rbErr := s.uow.Rollback(); rbErr != nil {
+				log.Printf("failed to rollback transaction: %v", rbErr)
+			}
+		}
+	}()
+
+	err := s.uow.ClimbsDb().RecordAlpinistClimb(ctx, alpinistID, climbID)
+	if err != nil {
+		return fmt.Errorf("%s: %w", op, err)
+	}
+
+	if err := s.uow.Commit(); err != nil {
+		return fmt.Errorf("failed to commit transaction: %w", err)
+	}
+
+	return nil
 }
 
 func (s *ClimbService) GetAll(ctx context.Context, mountainID int, categoryID int) ([]domain.Climb, error) {

@@ -64,6 +64,7 @@ CREATE TABLE mountain_climbs (
     start_date DATE,
     end_date DATE,
     total VARCHAR(10),
+    places_left INT CHECK (places_left >= 0),
     photo_url VARCHAR(255),
     FOREIGN KEY (id_mountain) REFERENCES mountain(id) ON DELETE CASCADE,
     FOREIGN KEY (id_category) REFERENCES category_of_difficulty(id) ON DELETE CASCADE
@@ -118,3 +119,10 @@ CREATE TABLE alpinist_equipment (
     equipment_id INT REFERENCES equipment(id) ON DELETE CASCADE,
     alpinist_id INT REFERENCES alpinists(id) ON DELETE CASCADE
 );
+
+CREATE TABLE alpinist_climb (
+    id SERIAL PRIMARY KEY,
+    alpinist_id INT REFERENCES alpinists(id) ON DELETE CASCADE,
+    climb_id INT REFERENCES mountain_climbs(id) ON DELETE CASCADE
+);
+

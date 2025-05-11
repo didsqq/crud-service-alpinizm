@@ -5,12 +5,13 @@ import (
 
 	"github.com/didsqq/crud-service-alpinizm/internal/domain"
 	"github.com/didsqq/crud-service-alpinizm/internal/repository"
-	"github.com/go-chi/jwtauth"
+	"github.com/go-chi/jwtauth/v5"
 )
 
 type Climbs interface {
 	GetAll(ctx context.Context, mountainID int, categoryID int) ([]domain.Climb, error)
 	GetById(ctx context.Context, climbID int64) (domain.Climb, error)
+	RecordAlpinistClimb(ctx context.Context, alpinistID int64, climbID int64) error
 }
 
 type User interface {

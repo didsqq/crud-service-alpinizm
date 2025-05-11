@@ -11,6 +11,32 @@ type climbRepository struct {
 	queryer Queryer
 }
 
+func (s *climbRepository) RecordAlpinistClimb(ctx context.Context, alpinistID int64, climbID int64) error {
+	const op = "climbRepository.RecordAlpinistClimb"
+
+	query := `
+	INSERT INTO alpinist_climb (alpinist_id, climb_id)
+	VALUES ($1, $2)
+	`
+	_, err := s.queryer.ExecContext(ctx, query, alpinistID, climbID)
+	if err != nil {
+		return fmt.Errorf("%s: failed to record alpinist climb: %w", op, err)
+	}
+
+	query = `
+	UPDATE mountain_climbs
+	SET places_left = places_left - 1
+	WHERE climb_id = $1
+	`
+
+	_, err = s.queryer.ExecContext(ctx, query, climbID)
+	if err != nil {
+		return fmt.Errorf("%s: failed to update climb places left: %w", op, err)
+	}
+
+	return nil
+}
+
 func (s *climbRepository) GetAll(ctx context.Context, mountainID int, categoryID int) ([]domain.Climb, error) {
 	const op = "climbRepository.GetAll"
 
@@ -49,7 +75,7 @@ func (s *climbRepository) GetById(ctx context.Context, climbID int64) (domain.Cl
 	SELECT 
 		id, id_mountain, id_category, title, season, duration,
 		distance, elevation, map_url, rating, description, 
-		start_date, end_date, total, photo_url
+		start_date, end_date, total, places_left, photo_url
 	FROM mountain_climbs
 	WHERE id = $1
 	`

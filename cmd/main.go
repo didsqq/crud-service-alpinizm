@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/joho/godotenv"
 	"log"
 	"net/http"
 	"os"
@@ -11,10 +10,12 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/joho/godotenv"
+
 	"github.com/didsqq/crud-service-alpinizm/internal/handler"
 	"github.com/didsqq/crud-service-alpinizm/internal/repository"
 	"github.com/didsqq/crud-service-alpinizm/internal/service"
-	"github.com/go-chi/jwtauth"
+	"github.com/go-chi/jwtauth/v5"
 	_ "github.com/lib/pq"
 )
 

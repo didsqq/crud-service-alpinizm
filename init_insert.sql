@@ -91,46 +91,46 @@ INSERT INTO position (title, description_of) VALUES
 
 INSERT INTO mountain_climbs (
     id_mountain, id_category, title, season, duration, distance, rating,
-    description, start_date, end_date, total, photo_url, elevation, map_url
+    description, start_date, end_date, total, places_left, photo_url, elevation, map_url
 ) VALUES
 (1, 1, 'Летнее восхождение на Эверест', 'Лето', '60 дней', '130 км', 4.9,
- 'Классический маршрут по южному склону.', '2023-05-01', '2023-06-30', '10 чел.', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuYGE9OGl_slWz3-ga2orA9uUILjUW_iXZbA&s',
+ 'Классический маршрут по южному склону.', '2023-05-01', '2023-06-30', '10 чел.', 10, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuYGE9OGl_slWz3-ga2orA9uUILjUW_iXZbA&s',
  '8848 м', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuYGE9OGl_slWz3-ga2orA9uUILjUW_iXZbA&s'),
 
 (2, 2, 'Зимнее восхождение на К2', 'Зима', '50 дней', '110 км', 4.7,
- 'Сложный маршрут в зимних условиях.', '2024-01-05', '2024-02-25', '8 чел.', 'https://example.com/k2_winter.jpg',
+ 'Сложный маршрут в зимних условиях.', '2024-01-05', '2024-02-25', '8 чел.', 10, 'https://example.com/k2_winter.jpg',
  '8611 м', 'https://example.com/maps/k2_winter'),
 
 (3, 1, 'Осенний маршрут на Канченджангу', 'Осень', '40 дней', '100 км', 4.5,
- 'Маршрут средней сложности.', '2022-10-01', '2022-11-10', '7 чел.', 'https://example.com/kanchenjunga_autumn.jpg',
+ 'Маршрут средней сложности.', '2022-10-01', '2022-11-10', '7 чел.',10, 'https://example.com/kanchenjunga_autumn.jpg',
  '8586 м', 'https://example.com/maps/kanchenjunga_autumn'),
 
 (4, 3, 'Весеннее восхождение на Лхоцзе', 'Весна', '45 дней', '120 км', 4.6,
- 'Красивый маршрут для опытных альпинистов.', '2023-04-10', '2023-05-25', '9 чел.', 'https://example.com/lhotse_spring.jpg',
+ 'Красивый маршрут для опытных альпинистов.', '2023-04-10', '2023-05-25', '9 чел.', 10, 'https://example.com/lhotse_spring.jpg',
  '8516 м', 'https://example.com/maps/lhotse_spring'),
 
 (5, 2, 'Маршрут на Макалу через северный гребень', 'Лето', '50 дней', '140 км', 4.8,
- 'Технически сложное восхождение.', '2023-07-01', '2023-08-20', '6 чел.', 'https://example.com/makalu_north.jpg',
+ 'Технически сложное восхождение.', '2023-07-01', '2023-08-20', '6 чел.', 10, 'https://example.com/makalu_north.jpg',
  '8485 м', 'https://example.com/maps/makalu_north'),
 
 (1, 4, 'Экспедиция на Эверест через западный склон', 'Весна', '65 дней', '135 км', 4.9,
- 'Альтернативный сложный маршрут.', '2024-03-15', '2024-05-20', '11 чел.', 'https://example.com/everest_west.jpg',
+ 'Альтернативный сложный маршрут.', '2024-03-15', '2024-05-20', '11 чел.', 10, 'https://example.com/everest_west.jpg',
  '8848 м', 'https://example.com/maps/everest_west'),
 
 (2, 3, 'Экспедиция на К2 для опытных', 'Лето', '55 дней', '115 км', 4.7,
- 'Подходит только для профи.', '2023-06-10', '2023-08-05', '5 чел.', 'https://example.com/k2_experts.jpg',
+ 'Подходит только для профи.', '2023-06-10', '2023-08-05', '5 чел.', 10, 'https://example.com/k2_experts.jpg',
  '8611 м', 'https://example.com/maps/k2_experts'),
 
 (3, 1, 'Канченджанга. Начальный маршрут', 'Весна', '35 дней', '95 км', 4.3,
- 'Хорош для начинающих с проводником.', '2022-04-01', '2022-05-05', '12 чел.', 'https://example.com/kanchenjunga_easy.jpg',
+ 'Хорош для начинающих с проводником.', '2022-04-01', '2022-05-05', '12 чел.', 10, 'https://example.com/kanchenjunga_easy.jpg',
  '8586 м', 'https://example.com/maps/kanchenjunga_easy'),
 
 (4, 5, 'Экстремальный маршрут на Лхоцзе', 'Зима', '48 дней', '125 км', 4.8,
- 'Максимальная сложность, зимние условия.', '2024-12-01', '2025-01-18', '4 чел.', 'https://example.com/lhotse_extreme.jpg',
+ 'Максимальная сложность, зимние условия.', '2024-12-01', '2025-01-18', '4 чел.', 10, 'https://example.com/lhotse_extreme.jpg',
  '8516 м', 'https://example.com/maps/lhotse_extreme'),
 
 (5, 2, 'Макалу. Классика на лето', 'Лето', '42 дня', '110 км', 4.4,
- 'Популярный маршрут с живописными видами.', '2023-06-15', '2023-07-27', '10 чел.', 'https://example.com/makalu_classic.jpg',
+ 'Популярный маршрут с живописными видами.', '2023-06-15', '2023-07-27', '10 чел.', 10, 'https://example.com/makalu_classic.jpg',
  '8485 м', 'https://example.com/maps/makalu_classic');
 
 INSERT INTO position (title, description_of) VALUES

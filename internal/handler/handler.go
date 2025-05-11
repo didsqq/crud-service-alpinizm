@@ -11,7 +11,7 @@ import (
 	"github.com/didsqq/crud-service-alpinizm/internal/service"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/cors"
-	"github.com/go-chi/jwtauth"
+	"github.com/go-chi/jwtauth/v5"
 	httpSwagger "github.com/swaggo/http-swagger"
 )
 
@@ -41,17 +41,32 @@ func (h *Handler) InitRoutes(tokenAuth *jwtauth.JWTAuth) *chi.Mux {
 
 	r.Route("/api", func(r chi.Router) {
 		r.Route("/user", func(r chi.Router) {
-			r.Get("/{id}", h.getUser)
-			r.Delete("/{id}", h.deleteUser)
+			// Публичные маршруты
 			r.Post("/registration", h.createUser)
 			r.Post("/login", h.loginUser)
-			r.Get("/categories", h.getAllSportCategory)
-			r.Get("/auth", h.checkToken)
+
+			// Защищённые маршруты
+			r.Group(func(r chi.Router) {
+				r.Use(jwtauth.Verifier(tokenAuth))
+				r.Use(jwtauth.Authenticator(tokenAuth))
+
+				r.Get("/{id}", h.getUser)
+				r.Delete("/{id}", h.deleteUser)
+				r.Get("/categories", h.getAllSportCategory)
+				r.Get("/auth", h.checkToken)
+			})
 		})
 
 		r.Route("/climb", func(r chi.Router) {
 			r.Get("/", h.getAllClimbs)
 			r.Get("/{id}", h.getClimb)
+
+			r.Group(func(r chi.Router) {
+				r.Use(jwtauth.Verifier(tokenAuth))
+				r.Use(jwtauth.Authenticator(tokenAuth))
+
+				r.Post("/{id}/record", h.recordAlpinistClimb)
+			})
 		})
 
 		r.Route("/equipment", func(r chi.Router) {

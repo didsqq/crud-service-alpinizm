@@ -30,6 +30,7 @@ type Climb struct {
 	EndDate     time.Time   `db:"end_date"`
 	Total       string      `db:"total"`
 	PhotoUrl    string      `db:"photo_url"`
+	PlacesLeft  int         `db:"places_left"`
 	TeamLeaders []Team      `db:"team_leaders"`
 	Equipments  []Equipment `db:"equipments"`
 	Images      []Image     `db:"images"`

@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/go-chi/chi"
+	"github.com/go-chi/jwtauth"
 )
 
 func (h *Handler) getAllClimbs(w http.ResponseWriter, req *http.Request) {
@@ -61,4 +62,30 @@ func (h *Handler) getClimb(w http.ResponseWriter, req *http.Request) {
 	}
 
 	h.writeJSON(w, http.StatusOK, &climb)
+}
+
+func (h *Handler) recordAlpinistClimb(w http.ResponseWriter, req *http.Request) {
+	defer req.Body.Close()
+
+	climbIDStr := chi.URLParam(req, "id")
+
+	climbID, err := strconv.Atoi(climbIDStr)
+	if err != nil {
+		h.respondError(w, http.StatusBadRequest, "Неверный climbId", err)
+		return
+	}
+
+	_, claims, _ := jwtauth.FromContext(req.Context())
+
+	alpinistID := claims["id"].(int64)
+
+	ctx := req.Context()
+
+	err = h.services.Climbs.RecordAlpinistClimb(ctx, alpinistID, int64(climbID))
+	if err != nil {
+		h.respondError(w, http.StatusInternalServerError, "Ошибка записи восхождения", err)
+		return
+	}
+
+	h.writeJSON(w, http.StatusOK, "Восхождение записано")
 }
