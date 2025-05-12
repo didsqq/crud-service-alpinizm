@@ -72,6 +72,14 @@ func (h *Handler) InitRoutes(tokenAuth *jwtauth.JWTAuth) *chi.Mux {
 
 		r.Route("/equipment", func(r chi.Router) {
 			r.Get("/", h.getAllEquipment)
+
+			r.Group(func(r chi.Router) {
+				r.Use(jwtauth.Verifier(tokenAuth))
+				r.Use(jwtauth.Authenticator(tokenAuth))
+
+				r.Post("/{id}/record", h.recordAlpinistEquipment)
+				r.Get("/reservation", h.getAlpinistEquipment)
+			})
 		})
 
 		r.Route("/mountain", func(r chi.Router) {

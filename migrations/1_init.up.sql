@@ -117,7 +117,9 @@ CREATE TABLE climb_images (
 CREATE TABLE alpinist_equipment (
     id SERIAL PRIMARY KEY,
     equipment_id INT REFERENCES equipment(id) ON DELETE CASCADE,
-    alpinist_id INT REFERENCES alpinists(id) ON DELETE CASCADE
+    alpinist_id INT REFERENCES alpinists(id) ON DELETE CASCADE,
+    date_of_issue DATE,
+    date_of_return DATE
 );
 
 CREATE TABLE alpinist_climb (

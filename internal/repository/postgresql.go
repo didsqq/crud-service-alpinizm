@@ -19,6 +19,7 @@ const (
 	teamTable                   = "team"
 	team_leadersTable           = "team_leaders"
 	climbers_in_groupsTable     = "climbers_in_groups"
+	alpinistEquipmentTable      = "alpinist_equipment"
 )
 
 func NewPostgresDB(dsn string) (*sqlx.DB, error) {
