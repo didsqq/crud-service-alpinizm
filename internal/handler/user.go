@@ -60,7 +60,7 @@ func (h *Handler) createUser(w http.ResponseWriter, req *http.Request) {
 	}
 
 	if err := validate.ValidateUser(user); err != nil {
-		h.respondError(w, http.StatusBadRequest, "Ошибка валидации", err)
+		h.respondError(w, http.StatusBadRequest, err.Error(), err)
 		return
 	}
 

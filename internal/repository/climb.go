@@ -11,6 +11,25 @@ type climbRepository struct {
 	queryer Queryer
 }
 
+func (s *climbRepository) CheckRecordAlpinistClimb(ctx context.Context, alpinistID int64, climbID int64) error {
+	const op = "climbRepository.CheckRecordAlpinistClimb"
+
+	query := `
+	SELECT COUNT(*) FROM alpinist_climb WHERE alpinist_id = $1 AND climb_id = $2
+	`
+	var count int
+	err := s.queryer.GetContext(ctx, &count, query, alpinistID, climbID)
+	if err != nil {
+		return fmt.Errorf("%s: failed to check record alpinist climb: %w", op, err)
+	}
+
+	if count > 0 {
+		return ErrAlpinistHasRegistered
+	}
+
+	return nil
+}
+
 func (s *climbRepository) RecordAlpinistClimb(ctx context.Context, alpinistID int64, climbID int64) error {
 	const op = "climbRepository.RecordAlpinistClimb"
 
@@ -26,7 +45,7 @@ func (s *climbRepository) RecordAlpinistClimb(ctx context.Context, alpinistID in
 	query = `
 	UPDATE mountain_climbs
 	SET places_left = places_left - 1
-	WHERE climb_id = $1
+	WHERE id = $1
 	`
 
 	_, err = s.queryer.ExecContext(ctx, query, climbID)

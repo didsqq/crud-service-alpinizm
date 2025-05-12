@@ -32,7 +32,7 @@ func (h *Handler) InitRoutes(tokenAuth *jwtauth.JWTAuth) *chi.Mux {
 		AllowedOrigins:   []string{"http://localhost:5173", "https://crud-service-alpinizm.onrender.com"}, // фронтенд
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
-		ExposedHeaders:   []string{"Link"},
+		ExposedHeaders:   []string{"Link", "Authorization"},
 		AllowCredentials: true,
 		MaxAge:           int(12 * time.Hour / time.Second),
 	}))
@@ -44,6 +44,7 @@ func (h *Handler) InitRoutes(tokenAuth *jwtauth.JWTAuth) *chi.Mux {
 			// Публичные маршруты
 			r.Post("/registration", h.createUser)
 			r.Post("/login", h.loginUser)
+			r.Get("/categories", h.getAllSportCategory)
 
 			// Защищённые маршруты
 			r.Group(func(r chi.Router) {
@@ -52,7 +53,7 @@ func (h *Handler) InitRoutes(tokenAuth *jwtauth.JWTAuth) *chi.Mux {
 
 				r.Get("/{id}", h.getUser)
 				r.Delete("/{id}", h.deleteUser)
-				r.Get("/categories", h.getAllSportCategory)
+
 				r.Get("/auth", h.checkToken)
 			})
 		})

@@ -35,13 +35,21 @@ func (s *ClimbService) RecordAlpinistClimb(ctx context.Context, alpinistID int64
 		}
 	}()
 
-	err := s.uow.ClimbsDb().RecordAlpinistClimb(ctx, alpinistID, climbID)
+	err := s.uow.ClimbsTx().CheckRecordAlpinistClimb(ctx, alpinistID, climbID)
 	if err != nil {
-		return fmt.Errorf("%s: %w", op, err)
+		transactionErr = fmt.Errorf("%s: %w", op, err)
+		return transactionErr
+	}
+
+	err = s.uow.ClimbsTx().RecordAlpinistClimb(ctx, alpinistID, climbID)
+	if err != nil {
+		transactionErr = fmt.Errorf("%s: %w", op, err)
+		return transactionErr
 	}
 
 	if err := s.uow.Commit(); err != nil {
-		return fmt.Errorf("failed to commit transaction: %w", err)
+		transactionErr = fmt.Errorf("failed to commit transaction: %w", err)
+		return transactionErr
 	}
 
 	return nil

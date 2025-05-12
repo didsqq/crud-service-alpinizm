@@ -75,6 +75,12 @@ func (s *UserService) Login(ctx context.Context, username string, password strin
 }
 
 func (s *UserService) Create(ctx context.Context, user domain.User) (int, error) {
+	existUser, _ := s.uow.UsersDb().GetByUsername(ctx, user.Username)
+
+	if existUser != nil {
+		return 0, repository.ErrUserNameExist
+	}
+
 	passHash, err := generateHash(user.Password)
 	if err != nil {
 		return 0, err

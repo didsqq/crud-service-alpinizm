@@ -88,50 +88,50 @@ INSERT INTO position (title, description_of) VALUES
 
 
 
-
 INSERT INTO mountain_climbs (
     id_mountain, id_category, title, season, duration, distance, rating,
-    description, start_date, end_date, total, places_left, photo_url, elevation, map_url
+    description, start_date, end_date, total, places_left,photo_url, elevation, map_url
 ) VALUES
 (1, 1, 'Летнее восхождение на Эверест', 'Лето', '60 дней', '130 км', 4.9,
- 'Классический маршрут по южному склону.', '2023-05-01', '2023-06-30', '10 чел.', 10, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuYGE9OGl_slWz3-ga2orA9uUILjUW_iXZbA&s',
- '8848 м', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuYGE9OGl_slWz3-ga2orA9uUILjUW_iXZbA&s'),
+ 'Классический маршрут по южному склону.', '2023-05-01', '2023-06-30', '10 чел.', 10,'https://drive.google.com/uc?id=1JSbNONJAKv7TXo1QAg9-drk2HddSOJyi',
+ '8848 м', 'https://drive.google.com/uc?id=15q7CFbe48nlddF0GVABBZ5AbLSmW2Gd_'),
 
 (2, 2, 'Зимнее восхождение на К2', 'Зима', '50 дней', '110 км', 4.7,
- 'Сложный маршрут в зимних условиях.', '2024-01-05', '2024-02-25', '8 чел.', 10, 'https://example.com/k2_winter.jpg',
- '8611 м', 'https://example.com/maps/k2_winter'),
+ 'Сложный маршрут в зимних условиях.', '2024-01-05', '2024-02-25', '8 чел.', 10,'https://drive.google.com/uc?id=1XxZUELYe_ORWBkYIb8V93fFhqUpk3BiG',
+ '8611 м', 'https://drive.google.com/uc?id=13uy0BeC3xoKRRYg5_t9WuZD9ujHkazrL'),
 
 (3, 1, 'Осенний маршрут на Канченджангу', 'Осень', '40 дней', '100 км', 4.5,
- 'Маршрут средней сложности.', '2022-10-01', '2022-11-10', '7 чел.',10, 'https://example.com/kanchenjunga_autumn.jpg',
- '8586 м', 'https://example.com/maps/kanchenjunga_autumn'),
+ 'Маршрут средней сложности.', '2022-10-01', '2022-11-10', '7 чел.', 10,'https://drive.google.com/uc?id=19fYbap0BpC4vRyHrACCXlE6G7iL2BQpe',
+ '8586 м', 'https://drive.google.com/uc?id=1qvOI-GWRUETupEmBPu1yft9dCIDYTauU'),
 
 (4, 3, 'Весеннее восхождение на Лхоцзе', 'Весна', '45 дней', '120 км', 4.6,
- 'Красивый маршрут для опытных альпинистов.', '2023-04-10', '2023-05-25', '9 чел.', 10, 'https://example.com/lhotse_spring.jpg',
- '8516 м', 'https://example.com/maps/lhotse_spring'),
+ 'Красивый маршрут для опытных альпинистов.', '2023-04-10', '2023-05-25', '9 чел.', 10,'https://drive.google.com/uc?id=1QN3Pp1vLdl-Mbo7tNkeLAMdo8F5QJ6GT',
+ '8516 м', 'https://drive.google.com/uc?id=1HGJyWVxHR6xlcYPNrtdCpfMEZCZ3ykuF'),
 
 (5, 2, 'Маршрут на Макалу через северный гребень', 'Лето', '50 дней', '140 км', 4.8,
- 'Технически сложное восхождение.', '2023-07-01', '2023-08-20', '6 чел.', 10, 'https://example.com/makalu_north.jpg',
- '8485 м', 'https://example.com/maps/makalu_north'),
+ 'Технически сложное восхождение.', '2023-07-01', '2023-08-20', '6 чел.', 10,'https://drive.google.com/uc?id=1_8WMDuz9BuWPh8SHjnLG1JcjmLpixomo',
+ '8485 м', 'https://drive.google.com/uc?id=1CRGQMcUqloNQkSyZxrDgSrxtAzQucxWo'),
 
 (1, 4, 'Экспедиция на Эверест через западный склон', 'Весна', '65 дней', '135 км', 4.9,
- 'Альтернативный сложный маршрут.', '2024-03-15', '2024-05-20', '11 чел.', 10, 'https://example.com/everest_west.jpg',
- '8848 м', 'https://example.com/maps/everest_west'),
+ 'Альтернативный сложный маршрут.', '2024-03-15', '2024-05-20', '11 чел.',10, 'https://drive.google.com/uc?id=1JSbNONJAKv7TXo1QAg9-drk2HddSOJyi',
+ '8848 м', 'https://drive.google.com/uc?id=15q7CFbe48nlddF0GVABBZ5AbLSmW2Gd_'),
 
 (2, 3, 'Экспедиция на К2 для опытных', 'Лето', '55 дней', '115 км', 4.7,
- 'Подходит только для профи.', '2023-06-10', '2023-08-05', '5 чел.', 10, 'https://example.com/k2_experts.jpg',
- '8611 м', 'https://example.com/maps/k2_experts'),
+ 'Подходит только для профи.', '2023-06-10', '2023-08-05', '5 чел.', 10,'https://drive.google.com/uc?id=1XxZUELYe_ORWBkYIb8V93fFhqUpk3BiG',
+ '8611 м', 'https://drive.google.com/uc?id=13uy0BeC3xoKRRYg5_t9WuZD9ujHkazrL'),
 
 (3, 1, 'Канченджанга. Начальный маршрут', 'Весна', '35 дней', '95 км', 4.3,
- 'Хорош для начинающих с проводником.', '2022-04-01', '2022-05-05', '12 чел.', 10, 'https://example.com/kanchenjunga_easy.jpg',
- '8586 м', 'https://example.com/maps/kanchenjunga_easy'),
+ 'Хорош для начинающих с проводником.', '2022-04-01', '2022-05-05', '12 чел.', 10,'https://drive.google.com/uc?id=19fYbap0BpC4vRyHrACCXlE6G7iL2BQpe',
+ '8586 м', 'https://drive.google.com/uc?id=1qvOI-GWRUETupEmBPu1yft9dCIDYTauU'),
 
 (4, 5, 'Экстремальный маршрут на Лхоцзе', 'Зима', '48 дней', '125 км', 4.8,
- 'Максимальная сложность, зимние условия.', '2024-12-01', '2025-01-18', '4 чел.', 10, 'https://example.com/lhotse_extreme.jpg',
- '8516 м', 'https://example.com/maps/lhotse_extreme'),
+ 'Максимальная сложность, зимние условия.', '2024-12-01', '2025-01-18', '4 чел.', 10,'https://drive.google.com/uc?id=1QN3Pp1vLdl-Mbo7tNkeLAMdo8F5QJ6GT',
+ '8516 м', 'https://drive.google.com/uc?id=1HGJyWVxHR6xlcYPNrtdCpfMEZCZ3ykuF'),
 
 (5, 2, 'Макалу. Классика на лето', 'Лето', '42 дня', '110 км', 4.4,
- 'Популярный маршрут с живописными видами.', '2023-06-15', '2023-07-27', '10 чел.', 10, 'https://example.com/makalu_classic.jpg',
- '8485 м', 'https://example.com/maps/makalu_classic');
+ 'Популярный маршрут с живописными видами.', '2023-06-15', '2023-07-27', '10 чел.', 10,'https://drive.google.com/uc?id=1_8WMDuz9BuWPh8SHjnLG1JcjmLpixomo',
+ '8485 м', 'https://drive.google.com/uc?id=1CRGQMcUqloNQkSyZxrDgSrxtAzQucxWo');
+
 
 INSERT INTO position (title, description_of) VALUES
 ('Руководитель группы', 'Отвечает за организацию восхождения и безопасность команды'),
@@ -236,23 +236,23 @@ INSERT INTO climb_equipment (climb_id, equipment_id) VALUES
 
 INSERT INTO climb_images (climb_id, url) VALUES
 -- Для восхождения на Эверест
-(1, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKWahoLyKryDsZJU1bnvtBLArAqL8wvu9A6w&s'),
-(1, 'https://cdn.britannica.com/17/83817-050-67C814CD/Mount-Everest.jpg'),
-(1, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNLlul387fiFCoDkSQPwXqhnQjVZqQ0gGQjg&s'),
+(1, 'https://drive.google.com/uc?id=1vU6kFw0NrDsymEEFLTjlsJOYQ1tIiDRl'),
+(1, 'https://drive.google.com/uc?id=1_BcbX2tCgkTP8M4B40Cpi0jaJr0o2Crb'),
+(1, 'https://drive.google.com/uc?id=1PTu-1oZUaeafuCgPzTSIoAuaOICLqbgi'),
 
 -- Для восхождения на К2
-(2, 'https://example.com/images/k2_1.jpg'),
-(2, 'https://example.com/images/k2_2.jpg'),
-(2, 'https://example.com/images/k2_3.jpg'),
+(2, 'https://drive.google.com/uc?id=1PTu-1oZUaeafuCgPzTSIoAuaOICLqbgi'),
+(2, 'https://drive.google.com/uc?id=1TmSPPsSVo1h3bsLs4mXI2NWovy0ZC7fH'),
+(2, 'https://drive.google.com/uc?id=1f0vWYXkiy8_jkjHDXQ8bJ2H5bv6i01Bk'),
 
 -- Для восхождения на Канченджангу
-(3, 'https://example.com/images/kangchenjunga1.jpg'),
-(3, 'https://example.com/images/kangchenjunga2.jpg'),
+(3, 'https://drive.google.com/uc?id=1tCtQz52FK-IPOGdfYYbRjM8grhrxLbUE'),
+(3, 'https://drive.google.com/uc?id=1adoYvYT1P76g_7a3vQth3Nnyqk3pa_yZ'),
 
 -- Для восхождения на Лхоцзе
-(4, 'https://example.com/images/lhotse1.jpg'),
-(4, 'https://example.com/images/lhotse2.jpg'),
+(4, 'https://drive.google.com/uc?id=1U4r7v_iLDPP4ufzhW8A_u3sHWNH4nVWp'),
+(4, 'https://drive.google.com/uc?id=11esKkkcGbS1ixuwtHZktaZ1eKY4ClQZv'),
 
 -- Для восхождения на Макалу
-(5, 'https://example.com/images/makalu1.jpg'),
-(5, 'https://example.com/images/makalu2.jpg');
+(5, 'https://drive.google.com/uc?id=1Ml11cYqDmNiL_qPL1ZHDpeRiCLXefLvp'),
+(5, 'https://drive.google.com/uc?id=1HEC5sehMKHY4G0vAfD8wX75FzJTuBaNr');

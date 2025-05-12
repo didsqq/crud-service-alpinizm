@@ -10,14 +10,16 @@ import (
 )
 
 var (
-	ErrUserNotFound  = errors.New("user not found")
-	ErrUserNameExist = errors.New("username exist")
+	ErrUserNotFound          = errors.New("user not found")
+	ErrUserNameExist         = errors.New("username exist")
+	ErrAlpinistHasRegistered = errors.New("альпинист уже зарегистрирован на это восхождение")
 )
 
 type ClimbRepository interface {
 	GetAll(ctx context.Context, mountainID int, categoryID int) ([]domain.Climb, error)
 	GetById(ctx context.Context, climbID int64) (domain.Climb, error)
 	RecordAlpinistClimb(ctx context.Context, alpinistID int64, climbID int64) error
+	CheckRecordAlpinistClimb(ctx context.Context, alpinistID int64, climbID int64) error
 }
 
 type UserRepository interface {
@@ -45,6 +47,7 @@ type UnitOfWork interface {
 	ClimbsDb() ClimbRepository
 	EquipmentsDb() EquipmentRepository
 	MountainsDb() MountainRepository
+	ClimbsTx() ClimbRepository
 }
 
 type Queryer interface {
@@ -87,6 +90,10 @@ func (u *unitOfWork) UsersDb() UserRepository {
 
 func (u *unitOfWork) ClimbsDb() ClimbRepository {
 	return &climbRepository{queryer: u.db}
+}
+
+func (u *unitOfWork) ClimbsTx() ClimbRepository {
+	return &climbRepository{queryer: u.tx}
 }
 
 func (u *unitOfWork) EquipmentsDb() EquipmentRepository {

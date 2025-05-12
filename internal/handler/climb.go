@@ -1,12 +1,14 @@
 package handler
 
 import (
+	"errors"
 	"log"
 	"net/http"
 	"strconv"
 
+	"github.com/didsqq/crud-service-alpinizm/internal/repository"
 	"github.com/go-chi/chi"
-	"github.com/go-chi/jwtauth"
+	"github.com/go-chi/jwtauth/v5"
 )
 
 func (h *Handler) getAllClimbs(w http.ResponseWriter, req *http.Request) {
@@ -67,6 +69,8 @@ func (h *Handler) getClimb(w http.ResponseWriter, req *http.Request) {
 func (h *Handler) recordAlpinistClimb(w http.ResponseWriter, req *http.Request) {
 	defer req.Body.Close()
 
+	// log.Printf("Authorization header: %s", req.Header.Get("Authorization"))
+
 	climbIDStr := chi.URLParam(req, "id")
 
 	climbID, err := strconv.Atoi(climbIDStr)
@@ -75,14 +79,27 @@ func (h *Handler) recordAlpinistClimb(w http.ResponseWriter, req *http.Request) 
 		return
 	}
 
+	// log.Printf("climbID: %d", climbID)
+
 	_, claims, _ := jwtauth.FromContext(req.Context())
 
-	alpinistID := claims["id"].(int64)
+	// log.Printf("Claims from token: %+v", claims)
+
+	id, ok := claims["id"].(float64)
+	if !ok {
+		h.respondError(w, http.StatusUnauthorized, "Некорректный токен: отсутствует id", nil)
+		return
+	}
+	alpinistID := int64(id)
 
 	ctx := req.Context()
 
 	err = h.services.Climbs.RecordAlpinistClimb(ctx, alpinistID, int64(climbID))
 	if err != nil {
+		if errors.Is(err, repository.ErrAlpinistHasRegistered) {
+			h.respondError(w, http.StatusBadRequest, "Вы уже зарегистрированы на это восхождение", err)
+			return
+		}
 		h.respondError(w, http.StatusInternalServerError, "Ошибка записи восхождения", err)
 		return
 	}
