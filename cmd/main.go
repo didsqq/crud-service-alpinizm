@@ -10,8 +10,6 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/joho/godotenv"
-
 	"github.com/didsqq/crud-service-alpinizm/internal/handler"
 	"github.com/didsqq/crud-service-alpinizm/internal/repository"
 	"github.com/didsqq/crud-service-alpinizm/internal/service"
@@ -20,9 +18,9 @@ import (
 )
 
 func main() {
-	if err := godotenv.Load(); err != nil {
-		log.Fatal("Error loading .env file")
-	}
+	// if err := godotenv.Load(); err != nil {
+	// 	log.Fatal("Error loading .env file")
+	// }
 
 	dbPass := getEnvVar("DB_PASSWORD")
 	dbUser := getEnvVar("DB_USER")
