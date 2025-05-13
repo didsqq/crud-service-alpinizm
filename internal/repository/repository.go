@@ -20,6 +20,7 @@ type ClimbRepository interface {
 	GetById(ctx context.Context, climbID int64) (domain.Climb, error)
 	RecordAlpinistClimb(ctx context.Context, alpinistID int64, climbID int64) error
 	CheckRecordAlpinistClimb(ctx context.Context, alpinistID int64, climbID int64) error
+	GetAlpinistClimb(ctx context.Context, alpinistID int64) ([]domain.Climb, error)
 }
 
 type UserRepository interface {

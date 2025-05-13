@@ -34,10 +34,10 @@ func (s *climbRepository) RecordAlpinistClimb(ctx context.Context, alpinistID in
 	const op = "climbRepository.RecordAlpinistClimb"
 
 	query := `
-	INSERT INTO alpinist_climb (alpinist_id, climb_id)
-	VALUES ($1, $2)
+	INSERT INTO alpinist_climb (alpinist_id, climb_id, status)
+	VALUES ($1, $2, $3)
 	`
-	_, err := s.queryer.ExecContext(ctx, query, alpinistID, climbID)
+	_, err := s.queryer.ExecContext(ctx, query, alpinistID, climbID, "upcoming")
 	if err != nil {
 		return fmt.Errorf("%s: failed to record alpinist climb: %w", op, err)
 	}
@@ -161,4 +161,35 @@ func (s *climbRepository) GetById(ctx context.Context, climbID int64) (domain.Cl
 	}
 
 	return climb, nil
+}
+
+func (s *climbRepository) GetAlpinistClimb(ctx context.Context, alpinistID int64) ([]domain.Climb, error) {
+	const op = "climbRepository.GetAlpinistClimb"
+
+	query := `
+		SELECT mc.id, mc.id_mountain, mc.id_category, mc.title, mc.season, mc.duration, mc.distance, mc.elevation, mc.map_url, mc.rating, mc.description, mc.start_date, mc.end_date, mc.total, mc.places_left, mc.photo_url, ac.status
+		FROM mountain_climbs mc
+		JOIN alpinist_climb ac ON mc.id = ac.climb_id
+		WHERE ac.alpinist_id = $1
+	`
+
+	climbs := make([]domain.Climb, 0)
+	err := s.queryer.SelectContext(ctx, &climbs, query, alpinistID)
+	if err != nil {
+		return nil, fmt.Errorf("%s: failed to get alpinist climbs: %w", op, err)
+	}
+
+	for i := range climbs {
+		mountainQuery := `
+			SELECT id, title, height, mountain_range
+			FROM mountain
+			WHERE id = $1
+		`
+		err := s.queryer.GetContext(ctx, &climbs[i].Mountain, mountainQuery, climbs[i].IdMountain)
+		if err != nil {
+			return nil, fmt.Errorf("%s: failed to get mountain: %w", op, err)
+		}
+	}
+
+	return climbs, nil
 }

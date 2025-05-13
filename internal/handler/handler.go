@@ -66,6 +66,7 @@ func (h *Handler) InitRoutes(tokenAuth *jwtauth.JWTAuth) *chi.Mux {
 				r.Use(jwtauth.Verifier(tokenAuth))
 				r.Use(jwtauth.Authenticator(tokenAuth))
 
+				r.Get("/reservation", h.getAlpinistClimb)
 				r.Post("/{id}/record", h.recordAlpinistClimb)
 			})
 		})

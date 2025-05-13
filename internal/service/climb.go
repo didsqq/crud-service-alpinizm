@@ -76,3 +76,14 @@ func (s *ClimbService) GetById(ctx context.Context, climbID int64) (domain.Climb
 
 	return climb, nil
 }
+
+func (s *ClimbService) GetAlpinistClimb(ctx context.Context, alpinistID int64) ([]domain.Climb, error) {
+	const op = "ClimbService.GetAlpinistClimb"
+
+	climbs, err := s.uow.ClimbsDb().GetAlpinistClimb(ctx, alpinistID)
+	if err != nil {
+		return nil, fmt.Errorf("%s: %w", op, err)
+	}
+
+	return climbs, nil
+}

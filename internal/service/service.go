@@ -12,6 +12,7 @@ type Climbs interface {
 	GetAll(ctx context.Context, mountainID int, categoryID int) ([]domain.Climb, error)
 	GetById(ctx context.Context, climbID int64) (domain.Climb, error)
 	RecordAlpinistClimb(ctx context.Context, alpinistID int64, climbID int64) error
+	GetAlpinistClimb(ctx context.Context, alpinistID int64) ([]domain.Climb, error)
 }
 
 type User interface {

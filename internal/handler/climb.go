@@ -106,3 +106,25 @@ func (h *Handler) recordAlpinistClimb(w http.ResponseWriter, req *http.Request) 
 
 	h.writeJSON(w, http.StatusOK, "Восхождение записано")
 }
+
+func (h *Handler) getAlpinistClimb(w http.ResponseWriter, req *http.Request) {
+
+	_, claims, _ := jwtauth.FromContext(req.Context())
+
+	id, ok := claims["id"].(float64)
+	if !ok {
+		h.respondError(w, http.StatusUnauthorized, "Некорректный токен: отсутствует id", nil)
+		return
+	}
+	alpinistID := int64(id)
+
+	ctx := req.Context()
+
+	climbs, err := h.services.Climbs.GetAlpinistClimb(ctx, alpinistID)
+	if err != nil {
+		h.respondError(w, http.StatusInternalServerError, "Ошибка получения восхождений", err)
+		return
+	}
+
+	h.writeJSON(w, http.StatusOK, &climbs)
+}

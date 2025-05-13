@@ -125,6 +125,7 @@ CREATE TABLE alpinist_equipment (
 CREATE TABLE alpinist_climb (
     id SERIAL PRIMARY KEY,
     alpinist_id INT REFERENCES alpinists(id) ON DELETE CASCADE,
-    climb_id INT REFERENCES mountain_climbs(id) ON DELETE CASCADE
+    climb_id INT REFERENCES mountain_climbs(id) ON DELETE CASCADE,
+    status VARCHAR(20) NOT NULL
 );
 

@@ -34,8 +34,10 @@ type Climb struct {
 	TeamLeaders []Team      `db:"team_leaders"`
 	Equipments  []Equipment `db:"equipments"`
 	Images      []Image     `db:"images"`
-	Mountain    Mountain    `db:"mountain"`
-	Category    string      `db:"category"`
+
+	Mountain Mountain `db:"mountain"`
+	Category string   `db:"category"`
+	Status   string   `db:"status"`
 }
 
 type Team struct {
