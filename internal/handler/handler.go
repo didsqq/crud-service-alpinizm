@@ -29,7 +29,7 @@ func (h *Handler) InitRoutes(tokenAuth *jwtauth.JWTAuth) *chi.Mux {
 	r := chi.NewRouter()
 
 	r.Use(cors.Handler(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:5173", "https://crud-service-alpinizm.onrender.com", "https://alteregoo.netlify.app/"}, // фронтенд
+		AllowedOrigins:   []string{"http://localhost:5173", "https://crud-service-alpinizm.onrender.com", "https://alteregoo.netlify.app"}, // фронтенд
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
 		ExposedHeaders:   []string{"Link", "Authorization"},
