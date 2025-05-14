@@ -193,3 +193,20 @@ func (s *climbRepository) GetAlpinistClimb(ctx context.Context, alpinistID int64
 
 	return climbs, nil
 }
+
+func (s *climbRepository) GetAllCategoryOfDifficulty(ctx context.Context) ([]domain.CategoryOfDifficulty, error) {
+	const op = "climbRepository.GetAllCategoryOfDifficulty"
+
+	query := `
+	SELECT id, title
+	FROM category_of_difficulty
+	`
+
+	var categories []domain.CategoryOfDifficulty
+	err := s.queryer.SelectContext(ctx, &categories, query)
+	if err != nil {
+		return nil, fmt.Errorf("%s: failed to get category of difficulty: %w", op, err)
+	}
+
+	return categories, nil
+}

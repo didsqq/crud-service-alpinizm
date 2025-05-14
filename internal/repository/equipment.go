@@ -60,3 +60,15 @@ func (s *equipmentRepository) GetAlpinistEquipment(ctx context.Context, alpinist
 
 	return equipments, nil
 }
+
+func (s *equipmentRepository) DeleteAlpinistEquipment(ctx context.Context, alpinistID int64, equipmentID int64) error {
+	const op = "equipmentRepository.DeleteAlpinistEquipment"
+
+	query := fmt.Sprintf("DELETE FROM %s WHERE alpinist_id = $1 AND equipment_id = $2", alpinistEquipmentTable)
+
+	if _, err := s.queryer.ExecContext(ctx, query, alpinistID, equipmentID); err != nil {
+		return fmt.Errorf("%s: %w", op, err)
+	}
+
+	return nil
+}

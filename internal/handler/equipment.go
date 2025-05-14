@@ -65,3 +65,29 @@ func (h *Handler) getAlpinistEquipment(w http.ResponseWriter, req *http.Request)
 
 	h.writeJSON(w, http.StatusOK, &equipments)
 }
+
+func (h *Handler) deleteAlpinistEquipment(w http.ResponseWriter, req *http.Request) {
+	ctx := req.Context()
+	equipmentIDStr := chi.URLParam(req, "id")
+
+	equipmentID, err := strconv.Atoi(equipmentIDStr)
+	if err != nil {
+		h.respondError(w, http.StatusBadRequest, "Неверный equipmentId", err)
+		return
+	}
+
+	_, claims, _ := jwtauth.FromContext(req.Context())
+
+	alpinistID, ok := claims["id"].(float64)
+	if !ok {
+		h.respondError(w, http.StatusUnauthorized, "Некорректный токен: отсутствует id", nil)
+		return
+	}
+
+	if err := h.services.User.DeleteAlpinistEquipment(ctx, int64(alpinistID), int64(equipmentID)); err != nil {
+		h.respondError(w, http.StatusInternalServerError, "Ошибка удаления снаряжения", err)
+		return
+	}
+
+	h.writeJSON(w, http.StatusOK, "Снаряжение удалено")
+}

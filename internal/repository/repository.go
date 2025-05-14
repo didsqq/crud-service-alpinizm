@@ -21,6 +21,7 @@ type ClimbRepository interface {
 	RecordAlpinistClimb(ctx context.Context, alpinistID int64, climbID int64) error
 	CheckRecordAlpinistClimb(ctx context.Context, alpinistID int64, climbID int64) error
 	GetAlpinistClimb(ctx context.Context, alpinistID int64) ([]domain.Climb, error)
+	GetAllCategoryOfDifficulty(ctx context.Context) ([]domain.CategoryOfDifficulty, error)
 }
 
 type UserRepository interface {
@@ -31,12 +32,14 @@ type UserRepository interface {
 	GetByUsername(ctx context.Context, username string) (*domain.User, error)
 	GetAllSportCategory(ctx context.Context) ([]domain.SportCategory, error)
 	GetAllAlpinists(ctx context.Context) ([]domain.User, error)
+	CancelAlpinistClimb(ctx context.Context, alpinistID int64, climbID int64) error
 }
 
 type EquipmentRepository interface {
 	GetAll(ctx context.Context) ([]domain.Equipment, error)
 	RecordAlpinistEquipment(ctx context.Context, alpinistID int64, equipmentID int64) error
 	GetAlpinistEquipment(ctx context.Context, alpinistID int64) ([]domain.Equipment, error)
+	DeleteAlpinistEquipment(ctx context.Context, alpinistID int64, equipmentID int64) error
 }
 
 type MountainRepository interface {

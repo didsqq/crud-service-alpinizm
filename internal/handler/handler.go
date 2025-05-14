@@ -51,7 +51,7 @@ func (h *Handler) InitRoutes(tokenAuth *jwtauth.JWTAuth) *chi.Mux {
 				r.Use(jwtauth.Verifier(tokenAuth))
 				r.Use(jwtauth.Authenticator(tokenAuth))
 
-				r.Get("/{id}", h.getUser)
+				r.Get("/", h.getUser)
 				r.Delete("/{id}", h.deleteUser)
 
 				r.Get("/auth", h.checkToken)
@@ -61,6 +61,7 @@ func (h *Handler) InitRoutes(tokenAuth *jwtauth.JWTAuth) *chi.Mux {
 		r.Route("/climb", func(r chi.Router) {
 			r.Get("/", h.getAllClimbs)
 			r.Get("/{id}", h.getClimb)
+			r.Get("/category", h.getAllCategoryOfDifficulty)
 
 			r.Group(func(r chi.Router) {
 				r.Use(jwtauth.Verifier(tokenAuth))
@@ -68,6 +69,7 @@ func (h *Handler) InitRoutes(tokenAuth *jwtauth.JWTAuth) *chi.Mux {
 
 				r.Get("/reservation", h.getAlpinistClimb)
 				r.Post("/{id}/record", h.recordAlpinistClimb)
+				r.Delete("/{id}/cancel", h.cancelAlpinistClimb)
 			})
 		})
 
@@ -80,6 +82,7 @@ func (h *Handler) InitRoutes(tokenAuth *jwtauth.JWTAuth) *chi.Mux {
 
 				r.Post("/{id}/record", h.recordAlpinistEquipment)
 				r.Get("/reservation", h.getAlpinistEquipment)
+				r.Delete("/{id}/delete", h.deleteAlpinistEquipment)
 			})
 		})
 

@@ -119,13 +119,15 @@ CREATE TABLE alpinist_equipment (
     equipment_id INT REFERENCES equipment(id) ON DELETE CASCADE,
     alpinist_id INT REFERENCES alpinists(id) ON DELETE CASCADE,
     date_of_issue DATE,
-    date_of_return DATE
+    date_of_return DATE,
+    UNIQUE(alpinist_id, equipment_id)
 );
 
 CREATE TABLE alpinist_climb (
     id SERIAL PRIMARY KEY,
     alpinist_id INT REFERENCES alpinists(id) ON DELETE CASCADE,
     climb_id INT REFERENCES mountain_climbs(id) ON DELETE CASCADE,
-    status VARCHAR(20) NOT NULL
+    status VARCHAR(20) NOT NULL,
+    UNIQUE(alpinist_id, climb_id)
 );
 

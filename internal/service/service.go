@@ -13,6 +13,7 @@ type Climbs interface {
 	GetById(ctx context.Context, climbID int64) (domain.Climb, error)
 	RecordAlpinistClimb(ctx context.Context, alpinistID int64, climbID int64) error
 	GetAlpinistClimb(ctx context.Context, alpinistID int64) ([]domain.Climb, error)
+	GetAllCategoryOfDifficulty(ctx context.Context) ([]domain.CategoryOfDifficulty, error)
 }
 
 type User interface {
@@ -24,6 +25,8 @@ type User interface {
 	GetAllSportCategory(ctx context.Context) ([]domain.SportCategory, error)
 	CheckToken(ctx context.Context, token string) (bool, error)
 	GetAllAlpinists(ctx context.Context) ([]domain.User, error)
+	DeleteAlpinistEquipment(ctx context.Context, alpinistID int64, equipmentID int64) error
+	CancelAlpinistClimb(ctx context.Context, alpinistID int64, climbID int64) error
 }
 
 type Equipments interface {

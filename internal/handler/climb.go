@@ -128,3 +128,42 @@ func (h *Handler) getAlpinistClimb(w http.ResponseWriter, req *http.Request) {
 
 	h.writeJSON(w, http.StatusOK, &climbs)
 }
+
+func (h *Handler) getAllCategoryOfDifficulty(w http.ResponseWriter, req *http.Request) {
+	ctx := req.Context()
+
+	categories, err := h.services.Climbs.GetAllCategoryOfDifficulty(ctx)
+	if err != nil {
+		h.respondError(w, http.StatusInternalServerError, "Ошибка получения категорий сложности", err)
+		return
+	}
+
+	h.writeJSON(w, http.StatusOK, &categories)
+}
+
+func (h *Handler) cancelAlpinistClimb(w http.ResponseWriter, req *http.Request) {
+	ctx := req.Context()
+
+	climbID := chi.URLParam(req, "id")
+
+	_, claims, _ := jwtauth.FromContext(req.Context())
+
+	id, ok := claims["id"].(float64)
+	if !ok {
+		h.respondError(w, http.StatusUnauthorized, "Некорректный токен: отсутствует id", nil)
+		return
+	}
+
+	climbIDInt, err := strconv.Atoi(climbID)
+	if err != nil {
+		h.respondError(w, http.StatusBadRequest, "Ошибка преобразования climb_id", err)
+		return
+	}
+
+	if err := h.services.User.CancelAlpinistClimb(ctx, int64(id), int64(climbIDInt)); err != nil {
+		h.respondError(w, http.StatusInternalServerError, "Ошибка отмены бронирования", err)
+		return
+	}
+
+	h.respondSuccess(w, "Бронь отменена")
+}

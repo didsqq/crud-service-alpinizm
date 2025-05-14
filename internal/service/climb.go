@@ -87,3 +87,14 @@ func (s *ClimbService) GetAlpinistClimb(ctx context.Context, alpinistID int64) (
 
 	return climbs, nil
 }
+
+func (s *ClimbService) GetAllCategoryOfDifficulty(ctx context.Context) ([]domain.CategoryOfDifficulty, error) {
+	const op = "ClimbService.GetAllCategoryOfDifficulty"
+
+	categories, err := s.uow.ClimbsDb().GetAllCategoryOfDifficulty(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("%s: %w", op, err)
+	}
+
+	return categories, nil
+}

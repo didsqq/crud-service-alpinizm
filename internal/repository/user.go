@@ -160,3 +160,19 @@ func (r *userRepository) GetAllAlpinists(ctx context.Context) ([]domain.User, er
 
 	return users, nil
 }
+
+func (s *userRepository) CancelAlpinistClimb(ctx context.Context, alpinistID int64, climbID int64) error {
+	const op = "userRepository.CancelAlpinistClimb"
+
+	query := `
+	UPDATE alpinist_climb
+	SET status = 'canceled'
+	WHERE alpinist_id = $1 AND climb_id = $2
+	`
+	_, err := s.queryer.ExecContext(ctx, query, alpinistID, climbID)
+	if err != nil {
+		return fmt.Errorf("%s: failed to cancel alpinist climb: %w", op, err)
+	}
+
+	return nil
+}

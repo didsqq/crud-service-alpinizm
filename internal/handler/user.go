@@ -12,6 +12,7 @@ import (
 	"github.com/didsqq/crud-service-alpinizm/internal/handler/validate"
 	"github.com/didsqq/crud-service-alpinizm/internal/repository"
 	"github.com/go-chi/chi"
+	"github.com/go-chi/jwtauth/v5"
 )
 
 func (h *Handler) loginUser(w http.ResponseWriter, req *http.Request) {
@@ -39,16 +40,6 @@ func (h *Handler) loginUser(w http.ResponseWriter, req *http.Request) {
 	h.respondSuccess(w, fmt.Sprintf("%s", token))
 }
 
-// @Summary      Создать пользователя
-// @Tags         user
-// @Description  Создаёт нового пользователя
-// @Accept       json
-// @Produce      json
-// @Param        input body domain.UserInput true "Информация о пользователе"
-// @Success      200 {string} string "Пользователь создан c id: {id}"
-// @Failure      400 {string} string "Ошибка валидации или Username занят"
-// @Failure      500 {string} string "Ошибка создания пользователя"
-// @Router       /user [post]
 func (h *Handler) createUser(w http.ResponseWriter, req *http.Request) {
 	defer req.Body.Close()
 
@@ -79,29 +70,18 @@ func (h *Handler) createUser(w http.ResponseWriter, req *http.Request) {
 	h.respondSuccess(w, fmt.Sprintf("Пользователь создан c id: %d", id))
 }
 
-// @Summary      Получить пользователя по ID
-// @Tags         user
-// @Description  Возвращает пользователя по его ID
-// @Accept       json
-// @Produce      json
-// @Param        id path int true "ID пользователя"
-// @Success      200 {object} domain.User "Найденный пользователь"
-// @Failure      400 {string} string "Ошибка преобразования id"
-// @Failure      404 {string} string "Пользователь не найден"
-// @Failure      500 {string} string "Ошибка получения пользователя"
-// @Router       /user/{id} [get]
 func (h *Handler) getUser(w http.ResponseWriter, req *http.Request) {
-	userId := chi.URLParam(req, "id")
+	_, claims, _ := jwtauth.FromContext(req.Context())
 
-	id, err := strconv.Atoi(userId)
-	if err != nil {
-		h.respondError(w, http.StatusBadRequest, "Ошибка преобразования id", err)
+	alpinistID, ok := claims["id"].(float64)
+	if !ok {
+		h.respondError(w, http.StatusUnauthorized, "Некорректный токен: отсутствует id", nil)
 		return
 	}
 
 	ctx := req.Context()
 
-	user, err := h.services.User.GetByID(ctx, id)
+	user, err := h.services.User.GetByID(ctx, int(alpinistID))
 	if err != nil {
 		if errors.Is(err, repository.ErrUserNotFound) {
 			h.respondError(w, http.StatusNotFound, "Пользователь не найден", err)
@@ -114,17 +94,6 @@ func (h *Handler) getUser(w http.ResponseWriter, req *http.Request) {
 	h.writeJSON(w, http.StatusOK, &user)
 }
 
-// @Summary      Удалить пользователя по ID
-// @Tags         user
-// @Description  Удаляет пользователя по его ID
-// @Accept       json
-// @Produce      json
-// @Param        id path int true "ID пользователя"
-// @Success      200 {string} string "Пользователь успешно удалён"
-// @Failure      400 {string} string "Ошибка преобразования id"
-// @Failure      404 {string} string "Пользователь не найден"
-// @Failure      500 {string} string "Ошибка при удалении"
-// @Router       /user/{id} [delete]
 func (h *Handler) deleteUser(w http.ResponseWriter, req *http.Request) {
 	userId := chi.URLParam(req, "id")
 

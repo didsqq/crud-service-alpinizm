@@ -77,3 +77,8 @@ type Image struct {
 	ClimbID  int    `db:"climb_id"`
 	ImageUrl string `db:"url"`
 }
+
+type CategoryOfDifficulty struct {
+	ID    int    `db:"id"`
+	Title string `db:"title"`
+}
