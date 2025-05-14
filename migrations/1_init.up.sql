@@ -35,7 +35,7 @@ CREATE TABLE alpinists (
 CREATE TABLE equipment (
     id SERIAL PRIMARY KEY,
     title VARCHAR(255) UNIQUE NOT NULL,
-    quantity_available INT NOT NULL CHECK (quantity_available > 0),
+    quantity_available INT NOT NULL CHECK (quantity_available >= 0),
     image_url VARCHAR(255),
     description TEXT
 );

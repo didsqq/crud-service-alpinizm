@@ -34,6 +34,12 @@ func (s *equipmentRepository) RecordAlpinistEquipment(ctx context.Context, alpin
 		return fmt.Errorf("%s: %w", op, err)
 	}
 
+	query = fmt.Sprintf("UPDATE %s SET quantity_available = quantity_available - 1 WHERE id = $1", equipmentTable)
+
+	if _, err := s.queryer.ExecContext(ctx, query, equipmentID); err != nil {
+		return fmt.Errorf("%s: %w", op, err)
+	}
+
 	return nil
 }
 
