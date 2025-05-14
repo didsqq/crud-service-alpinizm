@@ -30,6 +30,7 @@ type UserRepository interface {
 	GetAll(ctx context.Context) ([]domain.User, error)
 	GetByUsername(ctx context.Context, username string) (*domain.User, error)
 	GetAllSportCategory(ctx context.Context) ([]domain.SportCategory, error)
+	GetAllAlpinists(ctx context.Context) ([]domain.User, error)
 }
 
 type EquipmentRepository interface {

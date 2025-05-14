@@ -144,3 +144,19 @@ func (r *userRepository) Delete(ctx context.Context, id int) error {
 
 	return nil
 }
+
+func (r *userRepository) GetAllAlpinists(ctx context.Context) ([]domain.User, error) {
+	const op = "userRepository.GetAllAlpinists"
+
+	var users []domain.User
+
+	query := fmt.Sprintf(`
+		SELECT * FROM %s
+	`, alpinistsTable)
+
+	if err := r.queryer.SelectContext(ctx, &users, query); err != nil {
+		return nil, fmt.Errorf("%s: %w", op, err)
+	}
+
+	return users, nil
+}

@@ -86,6 +86,8 @@ func (h *Handler) InitRoutes(tokenAuth *jwtauth.JWTAuth) *chi.Mux {
 		r.Route("/mountain", func(r chi.Router) {
 			r.Get("/", h.getAllMountains)
 		})
+
+		r.Get("/alpinists", h.getAllAlpinists)
 	})
 
 	r.Get("/swagger/*", httpSwagger.Handler(

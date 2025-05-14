@@ -122,3 +122,12 @@ func generateHash(pass string) (string, error) {
 
 	return string(passHash), nil
 }
+
+func (s *UserService) GetAllAlpinists(ctx context.Context) ([]domain.User, error) {
+	alpinists, err := s.uow.UsersDb().GetAllAlpinists(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return alpinists, nil
+}

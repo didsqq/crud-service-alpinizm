@@ -179,3 +179,15 @@ func (h *Handler) checkToken(w http.ResponseWriter, req *http.Request) {
 		"valid": b,
 	})
 }
+
+func (h *Handler) getAllAlpinists(w http.ResponseWriter, req *http.Request) {
+	ctx := req.Context()
+
+	a, err := h.services.User.GetAllAlpinists(ctx)
+	if err != nil {
+		h.respondError(w, http.StatusInternalServerError, "Ошибка получения альпинистов", err)
+		return
+	}
+
+	h.writeJSON(w, http.StatusOK, &a)
+}

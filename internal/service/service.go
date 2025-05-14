@@ -23,6 +23,7 @@ type User interface {
 	Login(ctx context.Context, username string, password string) (string, error)
 	GetAllSportCategory(ctx context.Context) ([]domain.SportCategory, error)
 	CheckToken(ctx context.Context, token string) (bool, error)
+	GetAllAlpinists(ctx context.Context) ([]domain.User, error)
 }
 
 type Equipments interface {
