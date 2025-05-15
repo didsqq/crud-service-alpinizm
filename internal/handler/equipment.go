@@ -108,11 +108,11 @@ func (h *Handler) updateAlpinistEquipment(w http.ResponseWriter, req *http.Reque
 		return
 	}
 
-	_, claims, _ := jwtauth.FromContext(req.Context())
+	alpinistIDStr := chi.URLParam(req, "alpinistId")
 
-	alpinistID, ok := claims["id"].(float64)
-	if !ok {
-		h.respondError(w, http.StatusUnauthorized, "Некорректный токен: отсутствует id", nil)
+	alpinistID, err := strconv.Atoi(alpinistIDStr)
+	if err != nil {
+		h.respondError(w, http.StatusBadRequest, "Неверный alpinistId", err)
 		return
 	}
 
