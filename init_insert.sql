@@ -86,51 +86,6 @@ INSERT INTO position (title, description_of) VALUES
 ('Кладовщик', 'Следит за снаряжением'),
 ('Участник', 'Обычный член команды');
 
-INSERT INTO climb_images (climb_id, url) VALUES
--- Для восхождения на Эверест
-(1, 'https://i.ibb.co/DP2KjxP4/2010-001.jpg'),
-(1, 'https://i.ibb.co/kgsdk0x8/scale-1200.png'),
-(1, 'https://i.ibb.co/DP2KjxP4/2010-001.jpg'),
-
--- Для восхождения на К2
-(2, 'https://i.ibb.co/xqWXpCHL/2010-006.jpg'),
-(2, 'https://i.ibb.co/RTjj0kRY/2151262-08.jpg'),
-(2, 'https://i.ibb.co/S4TJ9KFj/2151262-09.jpg'),
-
--- Для восхождения на Канченджангу
-(3, 'https://i.ibb.co/r2prDgp8/2151262-10.jpg'),
-(3, 'https://i.ibb.co/3yQPVb8d/i-1.webp'),
-
--- Для восхождения на Лхоцзе
-(4, 'https://i.ibb.co/CfXkvzf/i-2.webp'),
-(4, 'https://i.ibb.co/TDn09BGK/i-4.webp'),
-
--- Для восхождения на Макалу
-(5, 'https://i.ibb.co/XxbKhVw1/i-5.webp'),
-(5, 'https://i.ibb.co/Pdyj9Mz/i-6.webp'),
-
--- Для восхождения на Эверест
-(6, 'https://i.ibb.co/DP2KjxP4/2010-001.jpg'),
-(6, 'https://i.ibb.co/kgsdk0x8/scale-1200.png'),
-(6, 'https://i.ibb.co/DP2KjxP4/2010-001.jpg'),
-
--- Для восхождения на К2
-(7, 'https://i.ibb.co/xqWXpCHL/2010-006.jpg'),
-(7, 'https://i.ibb.co/RTjj0kRY/2151262-08.jpg'),
-(7, 'https://i.ibb.co/S4TJ9KFj/2151262-09.jpg'),
-
--- Для восхождения на Канченджангу
-(8, 'https://i.ibb.co/r2prDgp8/2151262-10.jpg'),
-(8, 'https://i.ibb.co/3yQPVb8d/i-1.webp'),
-
--- Для восхождения на Лхоцзе
-(9, 'https://i.ibb.co/CfXkvzf/i-2.webp'),
-(9, 'https://i.ibb.co/TDn09BGK/i-4.webp'),
-
--- Для восхождения на Макалу
-(10, 'https://i.ibb.co/XxbKhVw1/i-5.webp'),
-(10, 'https://i.ibb.co/Pdyj9Mz/i-6.webp');
-
 
 INSERT INTO mountain_climbs (
     id_mountain, id_category, title, season, duration, distance, rating,
@@ -277,26 +232,47 @@ INSERT INTO climb_equipment (climb_id, equipment_id) VALUES
 (7, 8),  -- Палатка
 (7, 12);
 
+INSERT INTO climb_images (climb_id, url) VALUES
+-- Для восхождения на Эверест
+(1, 'https://i.ibb.co/DP2KjxP4/2010-001.jpg'),
+(1, 'https://i.ibb.co/kgsdk0x8/scale-1200.png'),
+(1, 'https://i.ibb.co/DP2KjxP4/2010-001.jpg'),
 
--- INSERT INTO climb_images (climb_id, url) VALUES
--- -- Для восхождения на Эверест
--- (1, 'https://drive.google.com/uc?id=1vU6kFw0NrDsymEEFLTjlsJOYQ1tIiDRl'),
--- (1, 'https://drive.google.com/uc?id=1_BcbX2tCgkTP8M4B40Cpi0jaJr0o2Crb'),
--- (1, 'https://drive.google.com/uc?id=1PTu-1oZUaeafuCgPzTSIoAuaOICLqbgi'),
+-- Для восхождения на К2
+(2, 'https://i.ibb.co/xqWXpCHL/2010-006.jpg'),
+(2, 'https://i.ibb.co/RTjj0kRY/2151262-08.jpg'),
+(2, 'https://i.ibb.co/S4TJ9KFj/2151262-09.jpg'),
 
--- -- Для восхождения на К2
--- (2, 'https://drive.google.com/uc?id=1PTu-1oZUaeafuCgPzTSIoAuaOICLqbgi'),
--- (2, 'https://drive.google.com/uc?id=1TmSPPsSVo1h3bsLs4mXI2NWovy0ZC7fH'),
--- (2, 'https://drive.google.com/uc?id=1f0vWYXkiy8_jkjHDXQ8bJ2H5bv6i01Bk'),
+-- Для восхождения на Канченджангу
+(3, 'https://i.ibb.co/r2prDgp8/2151262-10.jpg'),
+(3, 'https://i.ibb.co/3yQPVb8d/i-1.webp'),
 
--- -- Для восхождения на Канченджангу
--- (3, 'https://drive.google.com/uc?id=1tCtQz52FK-IPOGdfYYbRjM8grhrxLbUE'),
--- (3, 'https://drive.google.com/uc?id=1adoYvYT1P76g_7a3vQth3Nnyqk3pa_yZ'),
+-- Для восхождения на Лхоцзе
+(4, 'https://i.ibb.co/CfXkvzf/i-2.webp'),
+(4, 'https://i.ibb.co/TDn09BGK/i-4.webp'),
 
--- -- Для восхождения на Лхоцзе
--- (4, 'https://drive.google.com/uc?id=1U4r7v_iLDPP4ufzhW8A_u3sHWNH4nVWp'),
--- (4, 'https://drive.google.com/uc?id=11esKkkcGbS1ixuwtHZktaZ1eKY4ClQZv'),
+-- Для восхождения на Макалу
+(5, 'https://i.ibb.co/XxbKhVw1/i-5.webp'),
+(5, 'https://i.ibb.co/Pdyj9Mz/i-6.webp'),
 
--- -- Для восхождения на Макалу
--- (5, 'https://drive.google.com/uc?id=1Ml11cYqDmNiL_qPL1ZHDpeRiCLXefLvp'),
--- (5, 'https://drive.google.com/uc?id=1HEC5sehMKHY4G0vAfD8wX75FzJTuBaNr');
+-- Для восхождения на Эверест
+(6, 'https://i.ibb.co/DP2KjxP4/2010-001.jpg'),
+(6, 'https://i.ibb.co/kgsdk0x8/scale-1200.png'),
+(6, 'https://i.ibb.co/DP2KjxP4/2010-001.jpg'),
+
+-- Для восхождения на К2
+(7, 'https://i.ibb.co/xqWXpCHL/2010-006.jpg'),
+(7, 'https://i.ibb.co/RTjj0kRY/2151262-08.jpg'),
+(7, 'https://i.ibb.co/S4TJ9KFj/2151262-09.jpg'),
+
+-- Для восхождения на Канченджангу
+(8, 'https://i.ibb.co/r2prDgp8/2151262-10.jpg'),
+(8, 'https://i.ibb.co/3yQPVb8d/i-1.webp'),
+
+-- Для восхождения на Лхоцзе
+(9, 'https://i.ibb.co/CfXkvzf/i-2.webp'),
+(9, 'https://i.ibb.co/TDn09BGK/i-4.webp'),
+
+-- Для восхождения на Макалу
+(10, 'https://i.ibb.co/XxbKhVw1/i-5.webp'),
+(10, 'https://i.ibb.co/Pdyj9Mz/i-6.webp');

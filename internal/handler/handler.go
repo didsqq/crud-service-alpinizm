@@ -80,9 +80,12 @@ func (h *Handler) InitRoutes(tokenAuth *jwtauth.JWTAuth) *chi.Mux {
 				r.Use(jwtauth.Verifier(tokenAuth))
 				r.Use(jwtauth.Authenticator(tokenAuth))
 
+				// r.Put("/{id}", h.updateEquipment)
+				r.Delete("/{id}", h.deleteAlpinistEquipment)
+
 				r.Post("/{id}/record", h.recordAlpinistEquipment)
 				r.Get("/reservation", h.getAlpinistEquipment)
-				r.Delete("/{id}/delete", h.deleteAlpinistEquipment)
+				r.Post("/{id}/delete", h.deleteAlpinistEquipment)
 			})
 		})
 

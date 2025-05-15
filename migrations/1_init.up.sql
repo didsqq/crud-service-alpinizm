@@ -118,9 +118,9 @@ CREATE TABLE alpinist_equipment (
     id SERIAL PRIMARY KEY,
     equipment_id INT REFERENCES equipment(id) ON DELETE CASCADE,
     alpinist_id INT REFERENCES alpinists(id) ON DELETE CASCADE,
-    date_of_issue DATE,
-    date_of_return DATE,
-    UNIQUE(alpinist_id, equipment_id)
+    date_of_issue DATE DEFAULT CURRENT_DATE,
+    date_of_return DATE DEFAULT CURRENT_DATE + INTERVAL '1 month',
+    status VARCHAR(255)
 );
 
 CREATE TABLE alpinist_climb (

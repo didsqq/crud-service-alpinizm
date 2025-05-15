@@ -29,7 +29,7 @@ func (s *EquipmentService) RecordAlpinistEquipment(ctx context.Context, alpinist
 	return nil
 }
 
-func (s *EquipmentService) GetAlpinistEquipment(ctx context.Context, alpinistID int64) ([]domain.Equipment, error) {
+func (s *EquipmentService) GetAlpinistEquipment(ctx context.Context, alpinistID int64) ([]domain.AlpinistEquipment, error) {
 	const op = "EquipmentService.GetAlpinistEquipment"
 
 	equipments, err := s.uow.EquipmentsDb().GetAlpinistEquipment(ctx, alpinistID)

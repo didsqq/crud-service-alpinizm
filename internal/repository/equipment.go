@@ -3,7 +3,6 @@ package repository
 import (
 	"context"
 	"fmt"
-	"time"
 
 	"github.com/didsqq/crud-service-alpinizm/internal/domain"
 )
@@ -28,9 +27,9 @@ func (s *equipmentRepository) GetAll(ctx context.Context) ([]domain.Equipment, e
 func (s *equipmentRepository) RecordAlpinistEquipment(ctx context.Context, alpinistID int64, equipmentID int64) error {
 	const op = "equipmentRepository.RecordAlpinistEquipment"
 
-	query := fmt.Sprintf("INSERT INTO %s (alpinist_id, equipment_id, date_of_issue, date_of_return) VALUES ($1, $2, $3, $4)", alpinistEquipmentTable)
+	query := fmt.Sprintf("INSERT INTO %s (alpinist_id, equipment_id, status) VALUES ($1, $2, $3)", alpinistEquipmentTable)
 
-	if _, err := s.queryer.ExecContext(ctx, query, alpinistID, equipmentID, time.Now(), time.Now().Add(time.Hour*24*30)); err != nil {
+	if _, err := s.queryer.ExecContext(ctx, query, alpinistID, equipmentID, "забронировано"); err != nil {
 		return fmt.Errorf("%s: %w", op, err)
 	}
 
@@ -43,17 +42,17 @@ func (s *equipmentRepository) RecordAlpinistEquipment(ctx context.Context, alpin
 	return nil
 }
 
-func (s *equipmentRepository) GetAlpinistEquipment(ctx context.Context, alpinistID int64) ([]domain.Equipment, error) {
+func (s *equipmentRepository) GetAlpinistEquipment(ctx context.Context, alpinistID int64) ([]domain.AlpinistEquipment, error) {
 	const op = "equipmentRepository.GetAlpinistEquipment"
 
 	query := fmt.Sprintf(`
-		SELECT e.id, e.title, e.quantity_available, e.image_url, e.description
+		SELECT e.id, e.title, e.quantity_available, e.image_url, e.description, ae.date_of_issue, ae.date_of_return, ae.status
 		FROM %s ae
 		JOIN %s e ON ae.equipment_id = e.id
 		WHERE ae.alpinist_id = $1`,
 		alpinistEquipmentTable, equipmentTable)
 
-	var equipments []domain.Equipment
+	var equipments []domain.AlpinistEquipment
 	if err := s.queryer.SelectContext(ctx, &equipments, query, alpinistID); err != nil {
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
@@ -64,9 +63,21 @@ func (s *equipmentRepository) GetAlpinistEquipment(ctx context.Context, alpinist
 func (s *equipmentRepository) DeleteAlpinistEquipment(ctx context.Context, alpinistID int64, equipmentID int64) error {
 	const op = "equipmentRepository.DeleteAlpinistEquipment"
 
-	query := fmt.Sprintf("DELETE FROM %s WHERE alpinist_id = $1 AND equipment_id = $2", alpinistEquipmentTable)
+	query := fmt.Sprintf("UPDATE %s SET status = 'пользователь отменил бронь' WHERE alpinist_id = $1 AND equipment_id = $2", alpinistEquipmentTable)
 
 	if _, err := s.queryer.ExecContext(ctx, query, alpinistID, equipmentID); err != nil {
+		return fmt.Errorf("%s: %w", op, err)
+	}
+
+	return nil
+}
+
+func (s *equipmentRepository) UpdateAlpinistEquipment(ctx context.Context, alpinistID int64, equipmentID int64, equipment domain.AlpinistEquipment) error {
+	const op = "equipmentRepository.UpdateAlpinistEquipment"
+
+	query := fmt.Sprintf("UPDATE %s SET status = $1, date_of_issue = $2, date_of_return = $3 WHERE alpinist_id = $4 AND equipment_id = $5", alpinistEquipmentTable)
+
+	if _, err := s.queryer.ExecContext(ctx, query, equipment.Status, equipment.DateOfIssue, equipment.DateOfReturn, alpinistID, equipmentID); err != nil {
 		return fmt.Errorf("%s: %w", op, err)
 	}
 

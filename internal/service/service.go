@@ -32,7 +32,7 @@ type User interface {
 type Equipments interface {
 	GetAll(ctx context.Context) ([]domain.Equipment, error)
 	RecordAlpinistEquipment(ctx context.Context, alpinistID int64, equipmentID int64) error
-	GetAlpinistEquipment(ctx context.Context, alpinistID int64) ([]domain.Equipment, error)
+	GetAlpinistEquipment(ctx context.Context, alpinistID int64) ([]domain.AlpinistEquipment, error)
 }
 
 type Mountains interface {

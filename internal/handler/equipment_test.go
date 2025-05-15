@@ -29,9 +29,9 @@ func (m *MockEquipmentService) RecordAlpinistEquipment(ctx context.Context, alpi
 	return args.Error(0)
 }
 
-func (m *MockEquipmentService) GetAlpinistEquipment(ctx context.Context, alpinistID int64) ([]domain.Equipment, error) {
+func (m *MockEquipmentService) GetAlpinistEquipment(ctx context.Context, alpinistID int64) ([]domain.AlpinistEquipment, error) {
 	args := m.Called(ctx, alpinistID)
-	return args.Get(0).([]domain.Equipment), args.Error(1)
+	return args.Get(0).([]domain.AlpinistEquipment), args.Error(1)
 }
 
 // MockService - мок для основного сервиса
