@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -121,6 +122,7 @@ func (h *Handler) updateAlpinistEquipment(w http.ResponseWriter, req *http.Reque
 		return
 	}
 
+	log.Println(equipment)
 	if err := h.services.Equipments.UpdateAlpinistEquipment(ctx, int64(alpinistID), int64(equipmentID), equipment); err != nil {
 		h.respondError(w, http.StatusInternalServerError, "Ошибка обновления снаряжения", err)
 		return
