@@ -77,11 +77,11 @@ func (h *Handler) InitRoutes(tokenAuth *jwtauth.JWTAuth) *chi.Mux {
 			r.Get("/", h.getAllEquipment)
 			r.Get("/admin", h.getAllEquipmentAdmin)
 
+			r.Put("/{id}/{alpinistId}", h.updateAlpinistEquipment)
 			r.Group(func(r chi.Router) {
 				r.Use(jwtauth.Verifier(tokenAuth))
 				r.Use(jwtauth.Authenticator(tokenAuth))
 
-				r.Put("/{id}", h.updateAlpinistEquipment)
 				r.Delete("/{id}", h.deleteAlpinistEquipment)
 
 				r.Post("/{id}/record", h.recordAlpinistEquipment)

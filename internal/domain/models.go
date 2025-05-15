@@ -82,14 +82,3 @@ type CategoryOfDifficulty struct {
 	ID    int    `db:"id"`
 	Title string `db:"title"`
 }
-
-type AlpinistEquipment struct {
-	ID                int       `db:"id"`
-	Title             string    `db:"title"`
-	QuantityAvailable int       `db:"quantity_available"`
-	ImageUrl          string    `db:"image_url"`
-	Description       string    `db:"description"`
-	DateOfIssue       time.Time `db:"date_of_issue"`
-	DateOfReturn      time.Time `db:"date_of_return"`
-	Status            string    `db:"status"`
-}

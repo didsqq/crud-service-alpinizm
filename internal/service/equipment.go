@@ -70,7 +70,7 @@ func (s *EquipmentService) DeleteAlpinistEquipment(ctx context.Context, alpinist
 	return nil
 }
 
-func (s *EquipmentService) GetAllEquipmentAdmin(ctx context.Context) ([]domain.AlpinistEquipment, error) {
+func (s *EquipmentService) GetAllEquipmentAdmin(ctx context.Context) ([]domain.AlpinistsEquipments, error) {
 	const op = "EquipmentService.GetAllEquipmentAdmin"
 
 	equipments, err := s.uow.EquipmentsDb().GetAllEquipmentAdmin(ctx)

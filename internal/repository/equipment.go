@@ -84,15 +84,15 @@ func (s *equipmentRepository) UpdateAlpinistEquipment(ctx context.Context, alpin
 	return nil
 }
 
-func (s *equipmentRepository) GetAllEquipmentAdmin(ctx context.Context) ([]domain.AlpinistEquipment, error) {
+func (s *equipmentRepository) GetAllEquipmentAdmin(ctx context.Context) ([]domain.AlpinistsEquipments, error) {
 	const op = "equipmentRepository.GetAllEquipmentAdmin"
 
 	query := fmt.Sprintf(`
-		SELECT e.id, e.title, e.quantity_available, e.image_url, e.description, ae.date_of_issue, ae.date_of_return, ae.status
+		SELECT e.id, e.alpinist_id, e.equipment_id, e.title, e.quantity_available, e.image_url, e.description, ae.date_of_issue, ae.date_of_return, ae.status
 		FROM %s ae
 		JOIN %s e ON ae.equipment_id = e.id`, alpinistEquipmentTable, equipmentTable)
 
-	var equipments []domain.AlpinistEquipment
+	var equipments []domain.AlpinistsEquipments
 	if err := s.queryer.SelectContext(ctx, &equipments, query); err != nil {
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
