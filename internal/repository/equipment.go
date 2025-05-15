@@ -88,7 +88,7 @@ func (s *equipmentRepository) GetAllEquipmentAdmin(ctx context.Context) ([]domai
 	const op = "equipmentRepository.GetAllEquipmentAdmin"
 
 	query := fmt.Sprintf(`
-		SELECT e.id, e.alpinist_id, e.equipment_id, e.title, e.quantity_available, e.image_url, e.description, ae.date_of_issue, ae.date_of_return, ae.status
+		SELECT e.id, ae.alpinist_id, ae.equipment_id, e.title, e.quantity_available, e.image_url, e.description, ae.date_of_issue, ae.date_of_return, ae.status
 		FROM %s ae
 		JOIN %s e ON ae.equipment_id = e.id`, alpinistEquipmentTable, equipmentTable)
 
