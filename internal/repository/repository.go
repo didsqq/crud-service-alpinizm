@@ -41,6 +41,7 @@ type EquipmentRepository interface {
 	GetAlpinistEquipment(ctx context.Context, alpinistID int64) ([]domain.AlpinistEquipment, error)
 	UpdateAlpinistEquipment(ctx context.Context, alpinistID int64, equipmentID int64, equipment domain.AlpinistEquipment) error
 	DeleteAlpinistEquipment(ctx context.Context, alpinistID int64, equipmentID int64) error
+	GetAllEquipmentAdmin(ctx context.Context) ([]domain.AlpinistEquipment, error)
 }
 
 type MountainRepository interface {

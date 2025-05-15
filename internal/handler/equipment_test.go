@@ -44,6 +44,11 @@ func (m *MockEquipmentService) DeleteAlpinistEquipment(ctx context.Context, alpi
 	return args.Error(0)
 }
 
+func (m *MockEquipmentService) GetAllEquipmentAdmin(ctx context.Context) ([]domain.AlpinistEquipment, error) {
+	args := m.Called(ctx)
+	return args.Get(0).([]domain.AlpinistEquipment), args.Error(1)
+}
+
 // MockService - мок для основного сервиса
 type MockService struct {
 	Equipments *MockEquipmentService

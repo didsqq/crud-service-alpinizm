@@ -128,3 +128,15 @@ func (h *Handler) updateAlpinistEquipment(w http.ResponseWriter, req *http.Reque
 
 	h.writeJSON(w, http.StatusOK, "Снаряжение обновлено")
 }
+
+func (h *Handler) getAllEquipmentAdmin(w http.ResponseWriter, req *http.Request) {
+	ctx := req.Context()
+
+	equipments, err := h.services.Equipments.GetAllEquipmentAdmin(ctx)
+	if err != nil {
+		h.respondError(w, http.StatusInternalServerError, "Ошибка получения снаряжений", err)
+		return
+	}
+
+	h.writeJSON(w, http.StatusOK, &equipments)
+}

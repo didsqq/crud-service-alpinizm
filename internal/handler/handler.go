@@ -75,6 +75,7 @@ func (h *Handler) InitRoutes(tokenAuth *jwtauth.JWTAuth) *chi.Mux {
 
 		r.Route("/equipment", func(r chi.Router) {
 			r.Get("/", h.getAllEquipment)
+			r.Get("/admin", h.getAllEquipmentAdmin)
 
 			r.Group(func(r chi.Router) {
 				r.Use(jwtauth.Verifier(tokenAuth))
