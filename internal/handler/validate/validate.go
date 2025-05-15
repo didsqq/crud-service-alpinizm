@@ -43,20 +43,20 @@ func ValidateUser(user domain.User) error {
 	}
 
 	// Проверка логина
-	// usernameRegex := regexp.MustCompile(`^[a-zA-Z0-9_]{3,20}$`)
-	// if !usernameRegex.MatchString(user.Username) {
-	// 	errs = append(errs, fmt.Errorf("логин: %w", ErrInvalidUsername))
-	// }
+	usernameRegex := regexp.MustCompile(`^[a-zA-Z0-9_]{3,20}$`)
+	if !usernameRegex.MatchString(user.Username) {
+		errs = append(errs, fmt.Errorf("логин: %w", ErrInvalidUsername))
+	}
 	if strings.TrimSpace(user.Username) == "" {
 		errs = append(errs, fmt.Errorf("логин: %w", ErrEmptyField))
 	}
 	// Проверка пароля
-	// hasLetter := regexp.MustCompile(`[A-Za-z]`).MatchString(user.Password)
-	// hasDigit := regexp.MustCompile(`\d`).MatchString(user.Password)
-	// hasMinLength := len(user.Password) >= 8
-	// if !(hasLetter && hasDigit && hasMinLength) {
-	// 	errs = append(errs, fmt.Errorf("пароль: %w", ErrInvalidPassword))
-	// }
+	hasLetter := regexp.MustCompile(`[A-Za-z]`).MatchString(user.Password)
+	hasDigit := regexp.MustCompile(`\d`).MatchString(user.Password)
+	hasMinLength := len(user.Password) >= 8
+	if !(hasLetter && hasDigit && hasMinLength) {
+		errs = append(errs, fmt.Errorf("пароль: %w", ErrInvalidPassword))
+	}
 	if strings.TrimSpace(user.Password) == "" {
 		errs = append(errs, fmt.Errorf("пароль: %w", ErrEmptyField))
 	}
