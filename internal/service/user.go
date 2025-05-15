@@ -132,14 +132,6 @@ func (s *UserService) GetAllAlpinists(ctx context.Context) ([]domain.User, error
 	return alpinists, nil
 }
 
-func (s *UserService) DeleteAlpinistEquipment(ctx context.Context, alpinistID int64, equipmentID int64) error {
-	if err := s.uow.EquipmentsDb().DeleteAlpinistEquipment(ctx, alpinistID, equipmentID); err != nil {
-		return err
-	}
-
-	return nil
-}
-
 func (s *UserService) CancelAlpinistClimb(ctx context.Context, alpinistID int64, climbID int64) error {
 	if err := s.uow.UsersDb().CancelAlpinistClimb(ctx, alpinistID, climbID); err != nil {
 		return err

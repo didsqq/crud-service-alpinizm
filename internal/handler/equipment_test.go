@@ -34,6 +34,16 @@ func (m *MockEquipmentService) GetAlpinistEquipment(ctx context.Context, alpinis
 	return args.Get(0).([]domain.AlpinistEquipment), args.Error(1)
 }
 
+func (m *MockEquipmentService) UpdateAlpinistEquipment(ctx context.Context, alpinistID int64, equipmentID int64, equipment domain.AlpinistEquipment) error {
+	args := m.Called(ctx, alpinistID, equipmentID, equipment)
+	return args.Error(0)
+}
+
+func (m *MockEquipmentService) DeleteAlpinistEquipment(ctx context.Context, alpinistID int64, equipmentID int64) error {
+	args := m.Called(ctx, alpinistID, equipmentID)
+	return args.Error(0)
+}
+
 // MockService - мок для основного сервиса
 type MockService struct {
 	Equipments *MockEquipmentService

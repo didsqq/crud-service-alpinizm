@@ -1,9 +1,11 @@
 package handler
 
 import (
+	"encoding/json"
 	"net/http"
 	"strconv"
 
+	"github.com/didsqq/crud-service-alpinizm/internal/domain"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/jwtauth/v5"
 )
@@ -84,10 +86,45 @@ func (h *Handler) deleteAlpinistEquipment(w http.ResponseWriter, req *http.Reque
 		return
 	}
 
-	if err := h.services.User.DeleteAlpinistEquipment(ctx, int64(alpinistID), int64(equipmentID)); err != nil {
+	if err := h.services.Equipments.DeleteAlpinistEquipment(ctx, int64(alpinistID), int64(equipmentID)); err != nil {
 		h.respondError(w, http.StatusInternalServerError, "Ошибка удаления снаряжения", err)
 		return
 	}
 
 	h.writeJSON(w, http.StatusOK, "Снаряжение удалено")
+}
+
+func (h *Handler) updateAlpinistEquipment(w http.ResponseWriter, req *http.Request) {
+	defer req.Body.Close()
+
+	ctx := req.Context()
+
+	equipmentIDStr := chi.URLParam(req, "id")
+
+	equipmentID, err := strconv.Atoi(equipmentIDStr)
+	if err != nil {
+		h.respondError(w, http.StatusBadRequest, "Неверный equipmentId", err)
+		return
+	}
+
+	_, claims, _ := jwtauth.FromContext(req.Context())
+
+	alpinistID, ok := claims["id"].(float64)
+	if !ok {
+		h.respondError(w, http.StatusUnauthorized, "Некорректный токен: отсутствует id", nil)
+		return
+	}
+
+	var equipment domain.AlpinistEquipment
+	if err := json.NewDecoder(req.Body).Decode(&equipment); err != nil {
+		h.respondError(w, http.StatusBadRequest, "Неверный запрос", err)
+		return
+	}
+
+	if err := h.services.Equipments.UpdateAlpinistEquipment(ctx, int64(alpinistID), int64(equipmentID), equipment); err != nil {
+		h.respondError(w, http.StatusInternalServerError, "Ошибка обновления снаряжения", err)
+		return
+	}
+
+	h.writeJSON(w, http.StatusOK, "Снаряжение обновлено")
 }

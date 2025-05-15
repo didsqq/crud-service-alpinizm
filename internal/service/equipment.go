@@ -50,3 +50,22 @@ func (s *EquipmentService) GetAll(ctx context.Context) ([]domain.Equipment, erro
 
 	return equipments, nil
 }
+
+func (s *EquipmentService) UpdateAlpinistEquipment(ctx context.Context, alpinistID int64, equipmentID int64, equipment domain.AlpinistEquipment) error {
+	const op = "EquipmentService.UpdateAlpinistEquipment"
+
+	err := s.uow.EquipmentsDb().UpdateAlpinistEquipment(ctx, alpinistID, equipmentID, equipment)
+	if err != nil {
+		return fmt.Errorf("%s: %w", op, err)
+	}
+
+	return nil
+}
+
+func (s *EquipmentService) DeleteAlpinistEquipment(ctx context.Context, alpinistID int64, equipmentID int64) error {
+	if err := s.uow.EquipmentsDb().DeleteAlpinistEquipment(ctx, alpinistID, equipmentID); err != nil {
+		return err
+	}
+
+	return nil
+}
