@@ -81,7 +81,7 @@ func (s *equipmentRepository) UpdateAlpinistEquipment(ctx context.Context, alpin
 		return fmt.Errorf("%s: %w", op, err)
 	}
 
-	if equipment.Status == "отмена бронирования" || equipment.Status == "сдано" {
+	if equipment.Status == "сдано" {
 		query = fmt.Sprintf("UPDATE %s SET quantity_available = quantity_available + 1 WHERE id = $1", equipmentTable)
 
 		if _, err := s.queryer.ExecContext(ctx, query, equipmentID); err != nil {
